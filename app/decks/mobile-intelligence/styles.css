@@ -1657,3 +1657,179 @@ body.slideshow-mode main > #slide-hero {
 @media (max-width: 480px) {
   #slide-hero .input-paths { grid-template-columns: 1fr; }
 }
+
+/* Slide 6: private context and a specific, optional cloud request. */
+#slide-privacy .privacy-heading > p {
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.4;
+}
+#slide-privacy .privacy-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 44px;
+  margin-top: 32px;
+}
+#slide-privacy .privacy-label {
+  display: block;
+  font: 500 10px/1.4 "DM Mono", monospace;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+#slide-privacy .privacy-local {
+  padding: 28px 32px;
+  border: 1px solid rgba(105, 140, 130, .3);
+  border-radius: 22px;
+  background: rgba(167, 194, 189, .24);
+}
+#slide-privacy .privacy-layout h3 {
+  margin: 12px 0;
+  font: 400 34px/1.08 Georgia, serif;
+  letter-spacing: -.025em;
+}
+#slide-privacy .privacy-layout p {
+  font-size: 15px;
+  line-height: 1.45;
+}
+#slide-privacy .privacy-data {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 24px 0;
+  padding: 0;
+  list-style: none;
+}
+#slide-privacy .privacy-data li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(248, 245, 233, .7);
+  font-size: 13px;
+  line-height: 1.3;
+}
+#slide-privacy .privacy-data img {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  opacity: .75;
+}
+#slide-privacy .privacy-local-help h4 {
+  margin: 0 0 7px;
+  font: 400 24px/1.1 Georgia, serif;
+}
+#slide-privacy .privacy-consent {
+  min-width: 0;
+  padding: 8px 0 0;
+}
+#slide-privacy .privacy-request {
+  margin-top: 18px;
+  padding: 20px 22px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .5);
+}
+#slide-privacy .privacy-request h4 {
+  margin: 8px 0 16px;
+  font: 400 23px/1.15 Georgia, serif;
+}
+#slide-privacy .privacy-request dl {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+#slide-privacy .privacy-request dt {
+  margin-bottom: 4px;
+  font: 500 10px/1.3 "DM Mono", monospace;
+}
+#slide-privacy .privacy-request dd {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.35;
+}
+#slide-privacy .privacy-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+#slide-privacy .privacy-choices span {
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: 500 11px/1.3 "DM Mono", monospace;
+}
+#slide-privacy .privacy-choices .privacy-share {
+  background: rgba(229, 139, 104, .24);
+  border-color: rgba(183, 101, 70, .4);
+}
+#slide-privacy .privacy-takeaway {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 32px;
+  margin-top: 28px;
+}
+#slide-privacy .privacy-takeaway > p {
+  font: italic 400 25px/1.2 Georgia, serif;
+}
+#slide-privacy .privacy-takeaway > small {
+  max-width: 300px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.4;
+  text-align: right;
+}
+body.slideshow-mode main > #slide-privacy {
+  padding-bottom: 40px;
+}
+@media (max-width: 1100px), (max-height: 820px) {
+  body.slideshow-mode main > #slide-privacy {
+    --slide-title-size: 36px;
+    padding-top: 42px;
+    padding-bottom: 28px;
+  }
+  #slide-privacy .privacy-heading > p { margin-top: 14px; font-size: 15px; }
+  #slide-privacy .privacy-layout { gap: 28px; margin-top: 24px; }
+  #slide-privacy .privacy-local { padding: 22px 24px; }
+  #slide-privacy .privacy-layout h3 { font-size: 29px; margin: 10px 0; }
+  #slide-privacy .privacy-layout p { font-size: 14px; }
+  #slide-privacy .privacy-data { gap: 8px; margin: 20px 0; }
+  #slide-privacy .privacy-data li { padding: 10px; gap: 8px; font-size: 12px; }
+  #slide-privacy .privacy-data img { width: 20px; height: 20px; }
+  #slide-privacy .privacy-local-help h4 { font-size: 22px; }
+  #slide-privacy .privacy-request { margin-top: 14px; padding: 16px 18px; }
+  #slide-privacy .privacy-request h4 { font-size: 21px; margin-bottom: 12px; }
+  #slide-privacy .privacy-request dl { gap: 10px; }
+  #slide-privacy .privacy-request dd { font-size: 13px; }
+  #slide-privacy .privacy-choices { margin-top: 14px; }
+  #slide-privacy .privacy-takeaway { margin-top: 22px; gap: 24px; }
+  #slide-privacy .privacy-takeaway > p { font-size: 22px; }
+}
+@media (max-width: 900px) {
+  body.slideshow-mode main > #slide-privacy {
+    --privacy-viewport-gap: 148px;
+    --slide-title-size: 34px;
+    flex-basis: calc(100vw - 24px);
+    align-self: flex-start;
+    height: calc(100svh - var(--privacy-viewport-gap));
+    min-height: calc(100svh - var(--privacy-viewport-gap));
+    max-height: calc(100svh - var(--privacy-viewport-gap));
+    padding-top: 54px;
+    padding-bottom: 40px;
+  }
+  #slide-privacy .privacy-layout { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  #slide-privacy .privacy-consent { padding: 0; }
+  #slide-privacy .privacy-takeaway { flex-direction: column; gap: 14px; }
+  #slide-privacy .privacy-takeaway > small { max-width: none; text-align: left; }
+}
+@media (max-width: 800px) {
+  body.slideshow-mode main > #slide-privacy { --privacy-viewport-gap: 88px; }
+}
+@media (max-width: 480px) {
+  #slide-privacy .privacy-local { padding: 22px 18px; }
+  #slide-privacy .privacy-data { grid-template-columns: minmax(0, 1fr); }
+}
