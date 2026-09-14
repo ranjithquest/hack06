@@ -1328,9 +1328,6 @@ body.slideshow-mode .slide-dots { display: flex; }
   flex-direction: column;
   min-width: 0;
 }
-#slide-hero .map-stage > .diagram-label {
-  margin-bottom: 14px;
-}
 #slide-hero .input-paths {
   display: grid;
   grid-template-rows: 1fr 1fr;
@@ -1387,8 +1384,7 @@ body.slideshow-mode .slide-dots { display: flex; }
 }
 #slide-hero .merge-connector {
   width: 100%;
-  height: calc(100% - 27px);
-  margin-top: 27px;
+  height: 100%;
   color: var(--coral);
   align-self: end;
 }
@@ -1396,7 +1392,6 @@ body.slideshow-mode .slide-dots { display: flex; }
   position: relative;
   align-self: center;
   height: 1px;
-  margin-top: 27px;
   background: var(--coral);
 }
 #slide-hero .map-arrow::after {
@@ -1558,7 +1553,6 @@ body.slideshow-mode main > #slide-hero {
     gap: 8px;
     margin-top: 20px;
   }
-  #slide-hero .map-stage > .diagram-label { margin-bottom: 10px; font-size: 9px; }
   #slide-hero .input-path { padding: 13px; }
   #slide-hero .input-path h3 { font-size: 22px; margin-bottom: 10px; }
   #slide-hero .input-path p { font-size: 12px; }
