@@ -1376,12 +1376,6 @@ body.slideshow-mode .slide-dots { display: flex; }
   font-size: 14px;
   line-height: 1.4;
 }
-#slide-hero .permission-note {
-  display: block;
-  margin-top: 10px;
-  color: #5c7a70;
-  font: 500 10px/1.35 "DM Mono", monospace;
-}
 #slide-hero .merge-connector {
   width: 100%;
   height: 100%;
@@ -1559,7 +1553,6 @@ body.slideshow-mode main > #slide-hero {
   #slide-hero .input-options { gap: 8px 6px; }
   #slide-hero .input-options li { font-size: 11px; }
   #slide-hero .diagram-icon { width: 18px; height: 18px; }
-  #slide-hero .permission-note { font-size: 9px; }
   #slide-hero .intelligence-phone { padding: 22px 14px 16px; }
   #slide-hero .phone-thinking { height: 50px; }
   #slide-hero .phone-capabilities { gap: 12px; }
