@@ -167,45 +167,48 @@
 
     <section id="slide-privacy" class="section shell">
       <div class="privacy-heading">
-        <h2>What if your data stayed private?</h2>
-        <p>The value of AI should not come at the cost of giving up control of your information.</p>
+        <h2>Data is the moat in the AI era.</h2>
+        <p>Your phone holds personal and work data. On-device SLMs put more control in your hands, with two ways to operate: local-first or cloud-first.</p>
       </div>
-      <div class="privacy-layout">
-        <article class="privacy-local">
-          <span class="privacy-label">On your phone</span>
-          <h3>Private by default.</h3>
-          <p>Your personal and customer context stays on the device unless you choose to share it.</p>
-          <ul class="privacy-data">
-            <li><img src="/assets/mobile-assets/fluent-chat-24-regular.svg" alt="">Messages</li>
-            <li><img src="/assets/mobile-assets/fluent-camera-24-regular.svg" alt="">Photos</li>
-            <li><img src="/assets/mobile-assets/fluent-mic-24-regular.svg" alt="">Voice notes</li>
-            <li><img src="/assets/mobile-assets/fluent-document-24-regular.svg" alt="">Customer records</li>
-          </ul>
-          <div class="privacy-local-help">
-            <h4>Useful without uploading.</h4>
-            <p>Local AI helps you understand, draft and prepare with the context you allow.</p>
+      <div class="data-models">
+        <article class="model-lane model-local">
+          <div class="model-heading">
+            <span class="privacy-label">01 / Local-first</span>
+            <h3>On my phone.</h3>
+            <p>Keep my data with me. Use the cloud when I choose.</p>
           </div>
+          <figure class="model-flow local-flow" aria-label="Personal and work data on the phone flows through local AI to a useful outcome. An optional branch from local AI lets you choose and approve selected details for cloud AI, whose result returns to the phone. Without approval, nothing is sent.">
+            <div class="model-node model-source"><h4>Personal + work data</h4><p>Stays on the phone</p></div>
+            <span class="model-arrow source-arrow" aria-hidden="true"></span>
+            <div class="model-node model-processor"><h4>Local AI</h4><p>Understand, draft, prepare</p></div>
+            <span class="model-arrow outcome-arrow" aria-hidden="true"></span>
+            <div class="model-node model-outcome"><h4>Help on your phone</h4><p>You review and act</p></div>
+            <div class="cloud-gate"><span>Only if needed</span></div>
+            <div class="model-node model-permission"><h4>Choose what to share</h4><p>Approve this request</p></div>
+            <span class="model-arrow cloud-arrow" aria-hidden="true"></span>
+            <div class="model-node model-cloud-help"><h4>Cloud AI</h4><p>Only the approved details</p></div>
+            <span class="cloud-return" aria-hidden="true"></span>
+            <p class="mobile-return">Cloud result returns to your phone.</p>
+          </figure>
         </article>
-        <article class="privacy-consent">
-          <span class="privacy-label">Cloud, by choice</span>
-          <h3>You choose what leaves.</h3>
-          <p>When more help is needed, review why and exactly what would be sent.</p>
-          <div class="privacy-request">
-            <span class="privacy-label">Illustrative request</span>
-            <h4>Find current supplier prices</h4>
-            <dl>
-              <div><dt>Share for this task</dt><dd>20 cotton T-shirts, size M</dd></div>
-              <div><dt>Keep on your phone</dt><dd>Customer name, phone number and full conversation</dd></div>
-            </dl>
-            <div class="privacy-choices" role="img" aria-label="Example choices: stay on the phone, or share only the shown details with the cloud for this request.">
-              <span>Stay on phone</span><span class="privacy-share">Share this once</span>
-            </div>
+        <article class="model-lane model-cloud">
+          <div class="model-heading">
+            <span class="privacy-label">02 / Cloud-first</span>
+            <h3>In the cloud.</h3>
+            <p>Keep personal and work data in approved cloud spaces.</p>
           </div>
+          <figure class="model-flow" aria-label="Choose which personal and work data to store or connect in approved cloud spaces. Cloud AI uses authorised information to provide a useful outcome on the phone. Personal and work spaces have separate permissions.">
+            <div class="model-node model-source"><h4>Personal + work data</h4><p>Choose what to store or connect</p></div>
+            <span class="model-arrow source-arrow" aria-hidden="true"></span>
+            <div class="model-node model-processor"><h4>Cloud storage + AI</h4><p>Separate, approved spaces</p></div>
+            <span class="model-arrow outcome-arrow" aria-hidden="true"></span>
+            <div class="model-node model-outcome"><h4>Help on your phone</h4><p>You review and act</p></div>
+          </figure>
         </article>
       </div>
       <div class="privacy-takeaway">
-        <p>Private by default. Shared by choice.</p>
-        <small>Proposed experience. Cloud data use and retention must be explained before you agree.</small>
+        <p>Your data. More choice over where intelligence works.</p>
+        <small>Proposed models. Cloud can also be private. Work data follows organisation policy; personal and work permissions stay separate.</small>
       </div>
     </section>
 

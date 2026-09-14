@@ -1658,19 +1658,12 @@ body.slideshow-mode main > #slide-hero {
   #slide-hero .input-paths { grid-template-columns: 1fr; }
 }
 
-/* Slide 6: private context and a specific, optional cloud request. */
+/* Slide 6: two operating models, with a permission-gated cloud branch. */
 #slide-privacy .privacy-heading > p {
   margin-top: 18px;
   color: var(--muted);
   font-size: 17px;
   line-height: 1.4;
-}
-#slide-privacy .privacy-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-  align-items: stretch;
-  gap: 44px;
-  margin-top: 32px;
 }
 #slide-privacy .privacy-label {
   display: block;
@@ -1678,108 +1671,160 @@ body.slideshow-mode main > #slide-hero {
   letter-spacing: .08em;
   text-transform: uppercase;
 }
-#slide-privacy .privacy-local {
-  padding: 28px 32px;
-  border: 1px solid rgba(105, 140, 130, .3);
-  border-radius: 22px;
-  background: rgba(167, 194, 189, .24);
+#slide-privacy .data-models {
+  display: grid;
+  gap: 20px;
+  margin-top: 30px;
 }
-#slide-privacy .privacy-layout h3 {
-  margin: 12px 0;
-  font: 400 34px/1.08 Georgia, serif;
+#slide-privacy .model-lane {
+  display: grid;
+  grid-template-columns: 190px minmax(0, 1fr);
+  align-items: center;
+  gap: 28px;
+  padding: 24px;
+  border: 1px solid rgba(105, 140, 130, .3);
+  border-radius: 16px;
+  background: rgba(167, 194, 189, .2);
+}
+#slide-privacy .model-cloud {
+  background: rgba(232, 223, 200, .48);
+  border-color: var(--line);
+}
+#slide-privacy .model-heading h3 {
+  margin: 12px 0 10px;
+  font: 400 28px/1.08 Georgia, serif;
   letter-spacing: -.025em;
 }
-#slide-privacy .privacy-layout p {
-  font-size: 15px;
+#slide-privacy .model-heading p {
+  font-size: 13px;
   line-height: 1.45;
 }
-#slide-privacy .privacy-data {
+#slide-privacy .model-flow {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin: 24px 0;
-  padding: 0;
-  list-style: none;
-}
-#slide-privacy .privacy-data li {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px;
-  border-radius: 8px;
-  background: rgba(248, 245, 233, .7);
-  font-size: 13px;
-  line-height: 1.3;
-}
-#slide-privacy .privacy-data img {
-  flex: 0 0 auto;
-  width: 22px;
-  height: 22px;
-  opacity: .75;
-}
-#slide-privacy .privacy-local-help h4 {
-  margin: 0 0 7px;
-  font: 400 24px/1.1 Georgia, serif;
-}
-#slide-privacy .privacy-consent {
+  grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr) 28px minmax(0, 1fr);
+  align-items: stretch;
+  margin: 0;
   min-width: 0;
-  padding: 8px 0 0;
 }
-#slide-privacy .privacy-request {
-  margin-top: 18px;
-  padding: 20px 22px;
+#slide-privacy .local-flow {
+  grid-template-rows: auto 30px auto;
+}
+#slide-privacy .model-node {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: 16px;
   border: 1px solid var(--line);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, .5);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .6);
 }
-#slide-privacy .privacy-request h4 {
-  margin: 8px 0 16px;
-  font: 400 23px/1.15 Georgia, serif;
-}
-#slide-privacy .privacy-request dl {
-  display: grid;
-  gap: 12px;
+#slide-privacy .model-node h4 {
   margin: 0;
+  font: 400 21px/1.1 Georgia, serif;
 }
-#slide-privacy .privacy-request dt {
-  margin-bottom: 4px;
-  font: 500 10px/1.3 "DM Mono", monospace;
-}
-#slide-privacy .privacy-request dd {
-  margin: 0;
-  font-size: 14px;
+#slide-privacy .model-node p {
+  margin-top: 6px;
+  font-size: 12px;
   line-height: 1.35;
 }
-#slide-privacy .privacy-choices {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 18px;
+#slide-privacy .model-source { grid-column: 1; grid-row: 1; }
+#slide-privacy .model-processor { grid-column: 3; grid-row: 1; }
+#slide-privacy .model-outcome { grid-column: 5; grid-row: 1; }
+#slide-privacy .model-arrow {
+  position: relative;
+  align-self: center;
+  height: 1px;
+  background: var(--ink);
+  opacity: .65;
 }
-#slide-privacy .privacy-choices span {
-  padding: 10px 14px;
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  font: 500 11px/1.3 "DM Mono", monospace;
+#slide-privacy .model-arrow::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  right: 1px;
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid;
+  border-right: 1px solid;
+  transform: rotate(45deg);
 }
-#slide-privacy .privacy-choices .privacy-share {
-  background: rgba(229, 139, 104, .24);
+#slide-privacy .source-arrow { grid-column: 2; grid-row: 1; }
+#slide-privacy .outcome-arrow { grid-column: 4; grid-row: 1; }
+#slide-privacy .cloud-gate,
+#slide-privacy .cloud-return {
+  position: relative;
+  grid-column: 3;
+  grid-row: 2;
+  color: #a6583c;
+}
+#slide-privacy .cloud-gate::before,
+#slide-privacy .cloud-return::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  border-left: 1px dashed;
+}
+#slide-privacy .cloud-gate::after,
+#slide-privacy .cloud-return::after {
+  content: "";
+  position: absolute;
+  left: calc(50% - 3px);
+  bottom: 2px;
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  transform: rotate(45deg);
+}
+#slide-privacy .cloud-gate > span {
+  position: absolute;
+  right: calc(50% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  font: 500 9px/1.3 "DM Mono", monospace;
+  white-space: nowrap;
+}
+#slide-privacy .model-permission {
+  grid-column: 3;
+  grid-row: 3;
+  background: rgba(229, 139, 104, .15);
   border-color: rgba(183, 101, 70, .4);
 }
+#slide-privacy .cloud-arrow {
+  grid-column: 4;
+  grid-row: 3;
+  height: 0;
+  background: none;
+  border-top: 1px dashed;
+  color: #a6583c;
+  opacity: 1;
+}
+#slide-privacy .model-cloud-help {
+  grid-column: 5;
+  grid-row: 3;
+  border-style: dashed;
+  border-color: rgba(183, 101, 70, .4);
+}
+#slide-privacy .cloud-return { grid-column: 5; }
+#slide-privacy .cloud-return::after { top: 2px; bottom: auto; transform: rotate(225deg); }
+#slide-privacy .mobile-return { display: none; }
 #slide-privacy .privacy-takeaway {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 32px;
-  margin-top: 28px;
+  gap: 28px;
+  margin-top: 26px;
 }
 #slide-privacy .privacy-takeaway > p {
-  font: italic 400 25px/1.2 Georgia, serif;
+  font: italic 400 23px/1.2 Georgia, serif;
 }
 #slide-privacy .privacy-takeaway > small {
-  max-width: 300px;
+  max-width: 340px;
   color: var(--muted);
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.4;
   text-align: right;
 }
@@ -1793,21 +1838,17 @@ body.slideshow-mode main > #slide-privacy {
     padding-bottom: 28px;
   }
   #slide-privacy .privacy-heading > p { margin-top: 14px; font-size: 15px; }
-  #slide-privacy .privacy-layout { gap: 28px; margin-top: 24px; }
-  #slide-privacy .privacy-local { padding: 22px 24px; }
-  #slide-privacy .privacy-layout h3 { font-size: 29px; margin: 10px 0; }
-  #slide-privacy .privacy-layout p { font-size: 14px; }
-  #slide-privacy .privacy-data { gap: 8px; margin: 20px 0; }
-  #slide-privacy .privacy-data li { padding: 10px; gap: 8px; font-size: 12px; }
-  #slide-privacy .privacy-data img { width: 20px; height: 20px; }
-  #slide-privacy .privacy-local-help h4 { font-size: 22px; }
-  #slide-privacy .privacy-request { margin-top: 14px; padding: 16px 18px; }
-  #slide-privacy .privacy-request h4 { font-size: 21px; margin-bottom: 12px; }
-  #slide-privacy .privacy-request dl { gap: 10px; }
-  #slide-privacy .privacy-request dd { font-size: 13px; }
-  #slide-privacy .privacy-choices { margin-top: 14px; }
+  #slide-privacy .data-models { gap: 18px; margin-top: 24px; }
+  #slide-privacy .model-lane { grid-template-columns: 154px minmax(0, 1fr); gap: 20px; padding: 20px; }
+  #slide-privacy .model-heading h3 { font-size: 25px; margin: 10px 0 8px; }
+  #slide-privacy .model-heading p { font-size: 12px; }
+  #slide-privacy .model-flow { grid-template-columns: minmax(0, 1fr) 22px minmax(0, 1fr) 22px minmax(0, 1fr); }
+  #slide-privacy .local-flow { grid-template-rows: auto 28px auto; }
+  #slide-privacy .model-node { padding: 12px; }
+  #slide-privacy .model-node h4 { font-size: 19px; }
+  #slide-privacy .model-node p { margin-top: 5px; font-size: 11px; }
   #slide-privacy .privacy-takeaway { margin-top: 22px; gap: 24px; }
-  #slide-privacy .privacy-takeaway > p { font-size: 22px; }
+  #slide-privacy .privacy-takeaway > p { font-size: 21px; }
 }
 @media (max-width: 900px) {
   body.slideshow-mode main > #slide-privacy {
@@ -1821,15 +1862,46 @@ body.slideshow-mode main > #slide-privacy {
     padding-top: 54px;
     padding-bottom: 40px;
   }
-  #slide-privacy .privacy-layout { grid-template-columns: minmax(0, 1fr); gap: 28px; }
-  #slide-privacy .privacy-consent { padding: 0; }
+  #slide-privacy .model-lane { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  #slide-privacy .model-node h4 { font-size: 20px; }
   #slide-privacy .privacy-takeaway { flex-direction: column; gap: 14px; }
   #slide-privacy .privacy-takeaway > small { max-width: none; text-align: left; }
 }
 @media (max-width: 800px) {
   body.slideshow-mode main > #slide-privacy { --privacy-viewport-gap: 88px; }
 }
-@media (max-width: 480px) {
-  #slide-privacy .privacy-local { padding: 22px 18px; }
-  #slide-privacy .privacy-data { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 600px) {
+  #slide-privacy .model-lane { padding: 20px 16px; }
+  #slide-privacy .model-flow { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+  #slide-privacy .model-flow > * { grid-column: 1; grid-row: auto; }
+  #slide-privacy .model-node { padding: 15px; }
+  #slide-privacy .model-node p { font-size: 12px; }
+  #slide-privacy .model-arrow {
+    justify-self: center;
+    width: 1px;
+    height: 20px;
+  }
+  #slide-privacy .model-arrow::after {
+    top: auto;
+    bottom: 2px;
+    right: -3px;
+    transform: rotate(135deg);
+  }
+  #slide-privacy .cloud-gate {
+    margin-top: 24px;
+    padding: 18px 0 12px;
+    border-top: 1px dashed;
+  }
+  #slide-privacy .cloud-gate > span {
+    position: static;
+    display: block;
+    transform: none;
+    font-size: 10px;
+  }
+  #slide-privacy .cloud-gate > span::before { content: "Optional cloud help / "; }
+  #slide-privacy .cloud-gate::before,
+  #slide-privacy .cloud-gate::after,
+  #slide-privacy .cloud-return { display: none; }
+  #slide-privacy .cloud-arrow { width: 0; border-top: 0; border-left: 1px dashed; }
+  #slide-privacy .mobile-return { display: block; margin: 12px 0 0; font-size: 11px; line-height: 1.4; }
 }
