@@ -53,10 +53,26 @@ test("deliverables have unique IDs and real entries inside the app", async () =>
 });
 
 test("exports reject unknown IDs and traversal", () => {
-  for (const id of ["missing", "../mobile-intelligence", "../../outside"]) {
+  for (const id of ["missing", "copilot-local", "../mobile-intelligence", "../../outside"]) {
     assert.throws(() => findDeck(id), /Unknown deck/);
     assert.throws(() => exportPath(id), /Unknown deck/);
   }
+});
+
+test("research is the second deliverable and its contents links resolve", async () => {
+  const research = deliverables[1];
+  assert.equal(research.id, "copilot-local");
+  assert.equal(research.kind, "research");
+  const source = await readFile(resolve(project, "app", research.entry), "utf8");
+  const ids = [...source.matchAll(/<[a-z][^>]*\sid="([^"]+)"/gi)].map(match => match[1]);
+  assert.equal(new Set(ids).size, ids.length, "Document IDs must be unique");
+  for (const [, id] of source.matchAll(/\bhref="#([^"]+)"/g)) {
+    assert(ids.includes(id), `Missing anchor target: ${id}`);
+  }
+  assert.match(source, /class="research-close" href="\.\.\/\.\.\/"/);
+  assert.equal(workspacePlugin().transformIndexHtml.handler(source, {
+    filename: resolve(project, "app", research.entry),
+  }), source, "Research must not receive deck controls");
 });
 
 test("deck exports are self-contained and preserve slide content", async () => {

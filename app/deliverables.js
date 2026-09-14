@@ -7,4 +7,12 @@ export const deliverables = [
     entry: "decks/mobile-intelligence/index.html",
     label: "Opportunity narrative",
   },
+  {
+    id: "copilot-local",
+    kind: "research",
+    title: "Copilot Local",
+    description: "An Android-first, on-device AI concept: feasibility, architecture, India-first use cases and a focused hackathon plan.",
+    entry: "research/copilot-local/index.html",
+    label: "Feasibility & hackathon plan",
+  },
 ];

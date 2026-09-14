@@ -1,4 +1,4 @@
-# Hack 06 workspace
+# Hack 26 workspace
 
 A lightweight JavaScript/Vite workspace for hackathon deliverables. The original
 `pitch hack 06.html` is preserved as a pre-migration snapshot; it is no longer the
@@ -29,13 +29,14 @@ are made to the source files here, which updates the running preview.
 | `app/decks/mobile-intelligence/index.html` | Slide content |
 | `app/decks/mobile-intelligence/styles.css` | Existing deck styling |
 | `app/decks/mobile-intelligence/main.js` | Slide navigation |
+| `app/research/copilot-local/` | MAI-styled Copilot Local research document |
 | `app/shared/`, `assets/` | Shared styles, licensed fonts and artwork |
 | `research/`, `deliverables/` | Local-only research and reference material, excluded from Git |
 | `exports/` | Generated, self-contained HTML decks |
 
 ## Export a finished deck
 
-Click **Export HTML** in the workspace or live deck. This downloads an HTML file
+Click **Export HTML** inside the live deck. This downloads an HTML file
 and saves the same export in `exports/`.
 
 ```sh
@@ -53,7 +54,7 @@ every registered deck as a self-contained HTML file in `dist/exports/`. Use
 **Export HTML** at the top left and a **close (×) control** at the top right.
 Closing the deck returns to the workspace. There is no live-preview indicator.
 On the published deck, **Export HTML** downloads the packaged snapshot without a
-server-side export endpoint.
+server-side export endpoint. Workspace tiles open deliverables without export controls.
 Local **Export HTML** controls generate a fresh snapshot; the CLI export command
 is always available. Asset source and license notices are included in `dist/licenses/`
 and embedded in each HTML export's inert `asset-notices` template.
@@ -63,6 +64,8 @@ and embedded in each HTML export's inert `asset-notices` template.
 The authorized repository is https://github.com/ranjithquest/hack06, branch
 `main`. The owner explicitly made the repository public to enable GitHub Pages.
 Preserve the owner's chosen visibility; do not change it automatically.
+Hack 26 is the project name and branding; the existing repository, site URL,
+local folder, and preserved backup names remain unchanged.
 
 Each reviewed push to `main` runs `.github/workflows/pages.yml`: a clean
 `npm ci`, tests, the complete static build, artifact upload, and GitHub Pages
@@ -108,6 +111,13 @@ or another folder under `app/` for a prototype or page. Register it in
 description, label and entry path relative to `app/`. It then appears in the
 workspace and the static build. Entries with `kind: "deck"` also support HTML
 export.
+
+The second tile, **Copilot Local**, opens the approved research document at
+`research/copilot-local/`. Its original content, table of contents, source links,
+tables, architecture diagram, and expandable FAQs are retained in a MAI-styled
+reading layout. The original Downloads file is not modified or published.
+The homepage's **Open hackathon project** button opens the team's Innovation
+Studio submission in a separate tab.
 
 Use `/assets/...` for shared asset references and relative module/style imports.
 Keep deck resources local for portable exports. Do not import the workspace

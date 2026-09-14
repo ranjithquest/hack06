@@ -16,6 +16,13 @@ test("static publishing includes offline downloads and repository-relative asset
     for (const entry of entries) {
       const html = await readFile(resolve(directory, entry), "utf8");
       assert(!html.includes("/@vite/client"));
+      if (entry === "index.html") {
+        assert(html.includes("<title>Hack 26 - Workspace</title>"));
+        assert(!html.includes("Taking shape"));
+        assert(!html.includes("Your work stays here."));
+        assert(html.includes('class="hackathon-project"'));
+        assert(html.includes("https://innovation-studio.microsoft.com/events/hackathon2026/submissions/projects/proj-4d4a9637-a265-4d54-8b16-348d999beb91"));
+      }
       const deck = deliverables.find(item => item.entry === entry && item.kind === "deck");
       assert.equal(html.includes("workspace-preview-tools"), Boolean(deck), "Only decks need the toolbar");
       if (deck) {

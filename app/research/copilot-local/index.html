@@ -1,0 +1,1537 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="A feasibility analysis and step-by-step hackathon plan for Copilot Local, an Android gallery for private on-device AI experiences built around Microsoft Phi models and ONNX Runtime.">
+  <title>Copilot Local — Hackathon Plan and Feasibility Analysis</title>
+  <link rel="stylesheet" href="../../shared/fonts.css">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="research-topbar">
+    <a class="research-wordmark" href="../../">Hack <span>26</span></a>
+    <span class="research-category">Research / 02</span>
+    <a class="research-close" href="../../" aria-label="Close research and return to workspace">&times;</a>
+  </div>
+  <header class="research-hero" id="top">
+    <div class="research-art" aria-hidden="true"><img src="/assets/mobile-assets/mai-site/thinking-1.png" alt=""></div>
+    <p class="eyebrow">Hackathon decision document · Android-first · 2–3 days</p>
+    <h1>Copilot Local</h1>
+    <p class="subtitle">A Microsoft-shaped gallery for private, on-device AI—designed around Phi models, ONNX Runtime, Indian languages, low-connectivity contexts, and user-owned personal data.</p>
+    <p class="meta">Prepared 10 September 2026 · Team assumption: four product designers using AI-assisted development</p>
+  </header>
+
+  <div class="research-layout">
+    <nav class="toc" aria-labelledby="toc-title">
+      <h2 id="toc-title">In this document</h2>
+      <ol>
+        <li><a href="#verdict">Executive verdict</a></li>
+        <li><a href="#idea">What the product should be</a></li>
+        <li><a href="#comparison">LiteRT versus ONNX Runtime</a></li>
+        <li><a href="#abstraction">What end users should see</a></li>
+        <li><a href="#advantage">Where Microsoft can win</a></li>
+        <li><a href="#experience">Recommended user experience</a></li>
+        <li><a href="#architecture">Technical architecture</a></li>
+        <li><a href="#builder">How Create works</a></li>
+        <li><a href="#expense">SMS expense analysis</a></li>
+        <li><a href="#use-cases">India-first use cases</a></li>
+        <li><a href="#device-fit">6–8 GB mobile feasibility</a></li>
+        <li><a href="#scope">Hackathon scope</a></li>
+        <li><a href="#vibecode-plans">Two vibe-coding plans</a></li>
+        <li><a href="#plan">Integrated hackathon schedule</a></li>
+        <li><a href="#evaluation">Evaluation framework</a></li>
+        <li><a href="#risks">Risks and mitigations</a></li>
+        <li><a href="#pitch">Demo and pitch</a></li>
+        <li><a href="#faq">Frequently asked questions</a></li>
+      </ol>
+    </nav>
+    <main id="main">
+    
+
+    <section id="verdict">
+      <div class="verdict">
+        <div>
+          <p class="kicker">Executive verdict</p>
+          <h2>The direction is strong. The proposed hackathon scope is not.</h2>
+          <p>There is a compelling product here: a trusted, India-first way to discover models, understand device compatibility, and run useful AI workflows without uploading personal data. That is differentiated enough to pitch.</p>
+          <p>However, a four-designer team cannot credibly build a model marketplace, universal Hugging Face loader, multimodal gallery, agent builder, Android widget system, SMS finance analyzer, and reliable hardware-aware runtime in two or three days.</p>
+          <p><strong>The winning hackathon version should look broad but prove one narrow vertical.</strong> Build the gallery shell, compatibility recommendation, and Create interface; make one persistent local workflow—a generated expense agent that maintains a transaction ledger and opens into an already-updated dashboard—work end to end on one known Android phone.</p>
+        </div>
+        <div class="score" aria-label="Overall hackathon feasibility score: 7 out of 10 with reduced scope">
+          <div>
+            <strong>7/10</strong>
+            <span>feasible with strict scope<br>3/10 as originally described</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid three" style="margin-top:18px">
+        <article class="card">
+          <p class="kicker">Desirability</p>
+          <h3>High</h3>
+          <p>Privacy, regional-language access, offline utility, and transparent device fit address real anxieties in mobile AI.</p>
+        </article>
+        <article class="card">
+          <p class="kicker">Technical feasibility</p>
+          <h3>Medium</h3>
+          <p>Local inference is real, but model conversion, memory, thermal load, and Android acceleration vary sharply by device.</p>
+        </article>
+        <article class="card">
+          <p class="kicker">Hackathon feasibility</p>
+          <h3>Medium–high if narrowed</h3>
+          <p>A polished concept plus one true local pipeline is achievable. A production-quality open model platform is not.</p>
+        </article>
+      </div>
+
+      <div class="callout success">
+        <p><strong>Recommended one-line pitch:</strong> “Copilot Local turns your Android phone into a private AI workspace: it recommends models that fit your device and lets you create useful local agents for your own data—starting with a personal expense analyst that never uploads a transaction.”</p>
+      </div>
+    </section>
+
+    <section id="idea">
+      <h2>What the product should be</h2>
+      <p class="lede">Do not position Copilot Local as “Google AI Edge Gallery, but Microsoft.” Position it as a private personal-computing layer whose first distribution surface happens to be a model gallery.</p>
+
+      <div class="grid">
+        <article class="card">
+          <span class="rank">1</span><strong>Discover</strong>
+          <p>Browse a curated catalog of capabilities and model packs organized by jobs—chat, vision, voice, classification, extraction, and actions—not by runtime names or obscure architectures.</p>
+        </article>
+        <article class="card">
+          <span class="rank">2</span><strong>Fit</strong>
+          <p>See whether a model is recommended for this phone, how much storage and memory it needs, whether it can use an accelerator, and the expected experience class.</p>
+        </article>
+        <article class="card">
+          <span class="rank">3</span><strong>Experience</strong>
+          <p>Try built-in local experiences with clear privacy boundaries: prompt lab, image understanding, structured extraction, offline voice notes, and private document Q&amp;A.</p>
+        </article>
+        <article class="card">
+          <span class="rank">4</span><strong>Create</strong>
+          <p>Describe a personal workflow. Copilot Local converts the request into a persistent, permission-scoped local agent assembled from approved inputs, triggers, models, calculations, dashboards, and output surfaces.</p>
+        </article>
+      </div>
+
+      <div class="callout">
+        <p><strong>The key product distinction:</strong> Google’s gallery is primarily an exploration and evaluation environment. Copilot Local should make the next leap—from trying a model to installing a durable, personal, privacy-scoped capability.</p>
+      </div>
+    </section>
+
+    <section id="comparison">
+      <h2>LiteRT and ONNX Runtime are not exact equivalents</h2>
+      <p>LiteRT is Google’s lightweight runtime lineage for executing models on edge devices. ONNX is first a portable model representation; <strong>ONNX Runtime</strong> is the engine that executes those models. For generative models, Microsoft also provides <strong>ONNX Runtime GenAI</strong>, a higher-level layer for tokenization, generation loops, sampling, KV-cache management, chat templates, and structured output.</p>
+
+      <div class="table-wrap" role="region" aria-label="LiteRT and ONNX Runtime comparison" tabindex="0">
+        <table>
+          <caption>Practical comparison for an Android model gallery</caption>
+          <thead>
+            <tr>
+              <th scope="col">Dimension</th>
+              <th scope="col">Google LiteRT / LiteRT-LM</th>
+              <th scope="col">ONNX Runtime / ORT GenAI</th>
+              <th scope="col">Meaning for Copilot Local</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Core idea</strong></td>
+              <td>Android- and edge-focused model execution, descended from TensorFlow Lite.</td>
+              <td>Portable model format plus a cross-platform inference runtime.</td>
+              <td>Do not compare “LiteRT versus ONNX” without naming ONNX Runtime.</td>
+            </tr>
+            <tr>
+              <td><strong>Mobile integration</strong></td>
+              <td>Deep fit with Google’s Android AI stack and device acceleration path.</td>
+              <td>Android is supported; standard mobile ORT offers CPU, XNNPACK, and NNAPI. ORT GenAI lists Android support, but its Java API currently requires a source build.</td>
+              <td>LiteRT has the smoother Android-first developer story today. ORT is viable but carries integration risk.</td>
+            </tr>
+            <tr>
+              <td><strong>Model ecosystem</strong></td>
+              <td>Strong for Google-optimized and LiteRT-converted models.</td>
+              <td>Strong portability from PyTorch and other frameworks after export to ONNX; Microsoft publishes optimized Phi ONNX variants.</td>
+              <td>“Any Hugging Face model” is false. Each model needs a compatible ONNX export, tokenizer/config files, supported operators, and a mobile-suitable size.</td>
+            </tr>
+            <tr>
+              <td><strong>Generative API maturity</strong></td>
+              <td>LiteRT-LM and the gallery provide a visibly mobile-centric path.</td>
+              <td>ORT GenAI is powerful but its official documentation labels the API preview and subject to change.</td>
+              <td>Freeze a known working runtime/model pair for the demo. Do not dynamically support arbitrary architectures.</td>
+            </tr>
+            <tr>
+              <td><strong>Acceleration</strong></td>
+              <td>Delegates and Google’s edge toolchain; good Android hardware alignment.</td>
+              <td>Execution Providers abstract CPU and accelerators. ORT GenAI lists QNN among supported acceleration targets; standard Android mobile ORT documents NNAPI and XNNPACK.</td>
+              <td>Microsoft’s Qualcomm story is strategically useful for India’s Snapdragon-heavy premium/mid-tier market, but must be tested per device.</td>
+            </tr>
+            <tr>
+              <td><strong>Cross-platform reach</strong></td>
+              <td>Edge-first, with Google-led tooling.</td>
+              <td>Broad consistency across Windows, Linux, macOS, Android, servers, and many hardware backends.</td>
+              <td>This is Microsoft’s clearest structural advantage: one model/runtime strategy across phone, PC, and enterprise edge.</td>
+            </tr>
+            <tr>
+              <td><strong>Best use</strong></td>
+              <td>Fastest path for Android-first teams living inside Google’s model/tool ecosystem.</td>
+              <td>Best when portability, Phi optimization, Microsoft tooling, and deployment across device classes matter.</td>
+              <td>Copilot Local is credible on ORT, but not automatically superior on raw Android performance.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warning">
+        <p><strong>Honest conclusion:</strong> Microsoft does not clearly “win” on Android runtime ergonomics. It can win on the combined proposition of Phi + ONNX portability + Qualcomm/Windows reach + enterprise trust + a better end-user creation layer.</p>
+      </div>
+
+      <h3>Microsoft can deliberately choose either runtime</h3>
+      <p>Microsoft is not technically required to use ONNX Runtime. LiteRT is an open-source runtime and can power a Microsoft application when a suitable model package exists. The choice should be made per product goal and per tested model package:</p>
+      <div class="grid">
+        <article class="card">
+          <h3>Choose LiteRT first when</h3>
+          <p>Android integration, mobile acceleration, and fastest time to a reliable handset experience matter most—and the chosen Phi or other model has a validated <code>.litertlm</code> or compatible LiteRT artifact.</p>
+        </article>
+        <article class="card">
+          <h3>Choose ONNX Runtime first when</h3>
+          <p>First-party Phi packages, Windows and Foundry alignment, cross-platform portability, and a Microsoft-native deployment story matter most.</p>
+        </article>
+      </div>
+      <p>The long-term architecture can support both through runtime adapters, but a hackathon build should integrate only one. The same base model generally needs separate conversion, quantization, packaging, and validation for each runtime.</p>
+
+      <h3>Phi availability is not symmetrical</h3>
+      <div class="table-wrap" role="region" aria-label="Phi format availability" tabindex="0">
+        <table>
+          <caption>Current practical availability of Phi packages</caption>
+          <thead>
+            <tr>
+              <th scope="col">Format</th>
+              <th scope="col">Availability</th>
+              <th scope="col">Publisher status</th>
+              <th scope="col">Product implication</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>ONNX</strong></td>
+              <td>Multiple Phi-3, Phi-3.5, and Phi-4 repositories exist. Phi-4 Mini Instruct includes an int4 CPU/mobile configuration.</td>
+              <td>First-party Microsoft packages are available.</td>
+              <td>Lower model-supply and maintenance risk for a Microsoft product.</td>
+            </tr>
+            <tr>
+              <td><strong>LiteRT-LM</strong></td>
+              <td>Selected converted Phi artifacts exist, including a community Phi-4 Mini Reasoning package.</td>
+              <td>Primarily community conversions rather than Microsoft-maintained LiteRT releases.</td>
+              <td>Potentially strong Android path, but provenance, coverage, updates, and device testing must be evaluated package by package.</td>
+            </tr>
+            <tr>
+              <td><strong>Original weights</strong></td>
+              <td>Microsoft publishes base model weights for supported Phi releases.</td>
+              <td>First-party model, but not a ready mobile runtime package.</td>
+              <td>Conversion and quantization are an engineering pipeline, not something an average phone should do after download.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="abstraction">
+      <h2>End users should choose experiences, not runtimes</h2>
+      <p class="lede">ONNX, LiteRT, quantization, execution providers, tokenizers, and model formats should be implementation details. Copilot Local should automatically select a compatible model pack and runtime.</p>
+
+      <div class="table-wrap" role="region" aria-label="End-user model abstraction" tabindex="0">
+        <table>
+          <caption>Questions the interface should answer</caption>
+          <thead>
+            <tr>
+              <th scope="col">User question</th>
+              <th scope="col">Primary interface language</th>
+              <th scope="col">Optional advanced detail</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>What can it do?</td>
+              <td>“Private expense tracker,” “Offline document helper,” or “Image explainer.”</td>
+              <td>Model family and capability benchmark.</td>
+            </tr>
+            <tr>
+              <td>Will it work on my phone?</td>
+              <td><strong>Recommended</strong>, <strong>May run slowly</strong>, or <strong>Not compatible</strong>.</td>
+              <td>RAM estimate, provider, measured latency, and tested devices.</td>
+            </tr>
+            <tr>
+              <td>What will it consume?</td>
+              <td>Download size, local storage, battery expectation, and approximate setup time.</td>
+              <td>Quantization, context preset, and memory footprint.</td>
+            </tr>
+            <tr>
+              <td>What can it access?</td>
+              <td>“Transaction SMS only,” “Selected files only,” or “Microphone while recording.”</td>
+              <td>Connector, retention policy, local database, and audit log.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <p><strong>Recommended product hierarchy:</strong> Experiences first, model identity second, runtime under “Advanced details,” and raw format/provider information only in developer mode.</p>
+      </div>
+
+      <h3>The internal abstraction: a verified model pack</h3>
+      <p>Each downloadable pack should contain the model artifact, required runtime, tokenizer and prompt template, resource requirements, recommended settings, license, publisher identity, integrity signature, and compatibility results. When the user taps Install, Copilot Local profiles the device, chooses the correct pack, activates its runtime adapter, runs a health check, and reports the outcome in plain language.</p>
+    </section>
+
+    <section id="advantage">
+      <h2>Where Microsoft can credibly win</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Phi as a curated first-party shelf</h3>
+          <p>Microsoft can publish tested, quantized Phi packages with known memory profiles, model cards, safety notes, and ready-made experience templates. This is more useful than an undifferentiated catalog.</p>
+        </article>
+        <article class="card">
+          <h3>Phone-to-PC continuity</h3>
+              <p>A runtime-neutral agent definition could eventually move between Android, Windows, and local enterprise edge devices. A workflow created on a phone could run a larger model on a Copilot+ PC while preserving the same interface.</p>
+        </article>
+        <article class="card">
+          <h3>Microsoft developer ecosystem</h3>
+          <p>Foundry Local, Windows ML, VS Code AI Toolkit, and ONNX Runtime GenAI already point toward a shared local-inference story. Copilot Local can make that story tangible for consumers and creators.</p>
+        </article>
+        <article class="card">
+          <h3>Trust as a product feature</h3>
+          <p>Visible data permissions, per-agent data boundaries, local audit logs, deletion controls, and “network blocked during inference” indicators can turn privacy from a claim into an experience.</p>
+        </article>
+        <article class="card">
+          <h3>India-first workflow design</h3>
+          <p>Regional language, mixed-script input, UPI/bank message patterns, offline operation, low-storage modes, and device-tier guidance are opportunities that a generic global gallery may underserve.</p>
+        </article>
+        <article class="card">
+          <h3>Enterprise-grade agent governance</h3>
+          <p>The same safe agent-definition system could later support signed skill packs from banks, hospitals, schools, governments, or employers without allowing arbitrary generated code.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="experience">
+      <h2>A user flow built around Explore, Chat, and Create</h2>
+      <p class="lede">Most users do not want a model. They want a capability. The model should become visible only when it helps them make a storage, quality, speed, or privacy decision.</p>
+
+      <div class="flow" aria-labelledby="flow-title">
+        <h3 id="flow-title">Recommended creation journey</h3>
+        <ol>
+          <li><strong>Describe the agent</strong><span>“Track my spending from transaction SMS and explain unusual changes.”</span></li>
+          <li><strong>Review the plan</strong><span>Data source, triggers, calculations, model use, dashboard, storage, and permissions.</span></li>
+          <li><strong>Prepare once</strong><span>Reuse an installed model; download a compatible pack only if the required capability is missing.</span></li>
+          <li><strong>Build the first view</strong><span>Scan approved history, create the local ledger, calculate metrics, and render the dashboard.</span></li>
+          <li><strong>Pin and maintain</strong><span>Save as an in-app agent or home-screen entry that stays updated as new data arrives.</span></li>
+        </ol>
+      </div>
+
+      <div class="grid three">
+        <article class="card">
+          <p class="kicker">Explore</p>
+          <h3>Discover capabilities</h3>
+          <p>Find trusted local experiences and install compatible model packs without needing to understand their runtimes.</p>
+        </article>
+        <article class="card">
+          <p class="kicker">Chat</p>
+          <h3>Talk directly to a model</h3>
+          <p>Use an installed model for an immediate conversation or one-time task. The conversation does not automatically become persistent automation.</p>
+        </article>
+        <article class="card">
+          <p class="kicker">Create</p>
+          <h3>Build a durable local agent</h3>
+          <p>Turn a natural-language request into an approved data pipeline, calculations, generated dashboard, triggers, and persistent surfaces.</p>
+        </article>
+      </div>
+
+      <div class="grid three">
+        <article class="card">
+          <p class="kicker">Green badge</p>
+          <h3>Recommended</h3>
+          <p>Expected to load with safe memory headroom and acceptable response time on this device.</p>
+        </article>
+        <article class="card">
+          <p class="kicker">Amber badge</p>
+          <h3>Experimental</h3>
+          <p>May be slow, heat the device, or require shorter context. Let the user benchmark before adopting it.</p>
+        </article>
+        <article class="card">
+          <p class="kicker">Red badge</p>
+          <h3>Incompatible</h3>
+          <p>Unsupported architecture/operator, insufficient memory/storage, or unavailable execution provider.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="architecture">
+      <h2>A realistic product architecture</h2>
+      <p>Separate the product into a stable app shell, a curated compatibility catalog, runtime adapters, and safe agent definitions. This lets the interface look like an ecosystem without requiring arbitrary code execution.</p>
+
+      <figure class="architecture" tabindex="0">
+        <svg viewBox="0 0 940 590" role="img" aria-labelledby="arch-title arch-desc">
+          <title id="arch-title">Copilot Local architecture</title>
+          <desc id="arch-desc">A layered architecture with user surfaces at the top, an agent compiler and permission broker in the middle, model and data services below, and runtime adapters plus Android hardware at the bottom.</desc>
+          <defs>
+            <style>
+              .box { fill: #fff; stroke: #cbd6e6; stroke-width: 2; rx: 14; }
+              .bluebox { fill: #eef4ff; stroke: #78aee0; stroke-width: 2; rx: 14; }
+              .greenbox { fill: #ebf8f1; stroke: #73bd98; stroke-width: 2; rx: 14; }
+              .violetbox { fill: #f2efff; stroke: #a493e2; stroke-width: 2; rx: 14; }
+              .label { font: 700 17px system-ui, sans-serif; fill: #172033; }
+              .sub { font: 14px system-ui, sans-serif; fill: #59657a; }
+              .arrow { stroke: #6d7b91; stroke-width: 2.2; marker-end: url(#arrow); }
+            </style>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L9,3 z" fill="#6d7b91"/>
+            </marker>
+          </defs>
+
+          <rect x="40" y="35" width="260" height="82" class="bluebox"/>
+          <text x="62" y="68" class="label">Gallery &amp; compatibility</text>
+          <text x="62" y="93" class="sub">Discover, compare, download</text>
+
+          <rect x="340" y="35" width="260" height="82" class="bluebox"/>
+          <text x="362" y="68" class="label">Built-in experiences</text>
+          <text x="362" y="93" class="sub">Chat, extract, vision, voice</text>
+
+          <rect x="640" y="35" width="260" height="82" class="bluebox"/>
+          <text x="662" y="68" class="label">My local agents</text>
+          <text x="662" y="93" class="sub">Saved cards and shortcuts</text>
+
+          <line x1="170" y1="117" x2="250" y2="165" class="arrow"/>
+          <line x1="470" y1="117" x2="470" y2="165" class="arrow"/>
+          <line x1="770" y1="117" x2="690" y2="165" class="arrow"/>
+
+          <rect x="155" y="165" width="630" height="90" class="violetbox"/>
+          <text x="180" y="200" class="label">Create planner + agent compiler</text>
+          <text x="180" y="226" class="sub">Natural language → validated graph: trigger → data → tools/models → dashboard → surfaces</text>
+
+          <line x1="350" y1="255" x2="260" y2="305" class="arrow"/>
+          <line x1="590" y1="255" x2="680" y2="305" class="arrow"/>
+
+          <rect x="60" y="305" width="375" height="105" class="box"/>
+          <text x="84" y="340" class="label">Permission &amp; privacy broker</text>
+          <text x="84" y="366" class="sub">User-selected files, camera, microphone,</text>
+          <text x="84" y="389" class="sub">notification/SMS consent, local audit log</text>
+
+          <rect x="505" y="305" width="375" height="105" class="box"/>
+          <text x="529" y="340" class="label">Model &amp; artifact manager</text>
+          <text x="529" y="366" class="sub">Manifest, license, hash, resume download,</text>
+          <text x="529" y="389" class="sub">tokenizer/config, storage lifecycle</text>
+
+          <line x1="250" y1="410" x2="350" y2="462" class="arrow"/>
+          <line x1="690" y1="410" x2="590" y2="462" class="arrow"/>
+
+          <rect x="160" y="462" width="620" height="90" class="greenbox"/>
+          <text x="186" y="497" class="label">Runtime adapters</text>
+          <text x="186" y="523" class="sub">ONNX Runtime or LiteRT-LM · selected per verified model pack and tested device</text>
+
+          <text x="470" y="580" text-anchor="middle" class="sub">Android hardware: CPU · GPU/NPU through supported provider · memory · secure local storage</text>
+        </svg>
+        <figcaption class="small">The separation matters: models can change without changing the agent experience, and agents cannot silently escape their declared permissions.</figcaption>
+      </figure>
+
+      <h3>Compatibility manifest</h3>
+      <p>Do not infer compatibility from a Hugging Face tag alone. Maintain a signed catalog entry for every supported package:</p>
+      <div class="table-wrap" role="region" aria-label="Compatibility manifest fields" tabindex="0">
+        <table>
+          <caption>Minimum metadata per model package</caption>
+          <thead>
+            <tr>
+              <th scope="col">Identity</th>
+              <th scope="col">Runtime</th>
+              <th scope="col">Resources</th>
+              <th scope="col">Capability</th>
+              <th scope="col">Trust</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Name, version, publisher, architecture, source URL</td>
+              <td>Required runtime, version, provider/delegate, operators, tokenizer/config schema</td>
+              <td>Download bytes, peak RAM estimate, context presets, ABI</td>
+              <td>Text/vision/audio, languages, structured output, tools</td>
+              <td>License, checksum, signature, safety notes, test devices</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warning">
+        <p><strong>Device recommendations must be empirical.</strong> RAM alone is not enough. The app should eventually benchmark model load time, time-to-first-token, tokens per second, thermal behavior, and memory headroom on the actual phone. For the hackathon, use a static device profile plus one short benchmark.</p>
+      </div>
+    </section>
+
+    <section id="builder">
+      <h2>Create is an LLM-powered local orchestration feature</h2>
+      <p>Create is separate from ordinary chat. A chat model returns an answer to the current prompt; Create uses a model to plan a persistent capability, then hands the result to deterministic application systems that provision data access, triggers, calculations, storage, dashboards, notifications, and home-screen surfaces.</p>
+
+      <div class="table-wrap" role="region" aria-label="Chat and Create comparison" tabindex="0">
+        <table>
+          <caption>Why Create is more than downloading a model and chatting</caption>
+          <thead>
+            <tr>
+              <th scope="col">Normal model chat</th>
+              <th scope="col">Copilot Local Create</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>User supplies data and repeats the prompt each time.</td>
+              <td>Creates a reusable agent with an approved ongoing data source.</td>
+            </tr>
+            <tr>
+              <td>Returns text for the current conversation.</td>
+              <td>Produces a validated agent definition, database, dashboard, triggers, and surfaces.</td>
+            </tr>
+            <tr>
+              <td>The model is the main product.</td>
+              <td>The model is one planning and reasoning component inside the host platform.</td>
+            </tr>
+            <tr>
+              <td>The interaction ends when the conversation ends.</td>
+              <td>The agent persists, processes new events, and keeps its experience updated.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>What powers Create</h3>
+      <div class="grid three">
+        <article class="card">
+          <p class="kicker">1 · Planner</p>
+          <h3>Instruction-following SLM</h3>
+          <p>Interprets the request and emits structured tool calls or an agent schema. Phi-4 Mini Instruct is a credible Microsoft candidate because its model card includes a tool-enabled function-calling format.</p>
+        </article>
+        <article class="card">
+          <p class="kicker">2 · Compiler</p>
+          <h3>Deterministic application code</h3>
+          <p>Validates the schema, negotiates unsupported requests, checks permissions, rejects dangerous actions, and provisions only registered components.</p>
+        </article>
+        <article class="card">
+          <p class="kicker">3 · Runtime</p>
+          <h3>Local execution engine</h3>
+          <p>Listens for approved triggers, updates the database, runs calculations, invokes models when necessary, and refreshes dashboards and notifications.</p>
+        </article>
+      </div>
+
+      <p>An LLM generating and executing arbitrary Kotlin, JavaScript, shell commands, or Android packages on a phone would create major security, signing, permission, debugging, and store-policy problems. Create should therefore generate a constrained agent schema rather than executable code.</p>
+
+      <div class="grid">
+        <article class="card">
+          <p class="kicker">Feasible</p>
+          <h3>Declarative local agent</h3>
+          <p>The user describes a goal. A model fills a constrained schema using pre-approved blocks. The app validates it and previews exactly what data it will access.</p>
+          <p><span class="tag good">Safe-ish</span><span class="tag good">Demoable</span><span class="tag good">Shareable</span></p>
+        </article>
+        <article class="card">
+          <p class="kicker">Not feasible now</p>
+          <h3>Arbitrary generated mini-app</h3>
+          <p>The model creates executable code, custom UI, background services, and new permissions dynamically, then publishes them as independent apps or widgets.</p>
+          <p><span class="tag bad">Security risk</span><span class="tag bad">Platform limits</span><span class="tag bad">Unreliable</span></p>
+        </article>
+      </div>
+
+      <h3>An agent definition can contain</h3>
+      <div class="grid three">
+        <article class="card">
+          <h3>Inputs</h3>
+          <p>User-selected file, pasted text, camera image, recorded audio, scheduled local database query, or explicitly approved notification stream.</p>
+        </article>
+        <article class="card">
+          <h3>Transformations</h3>
+          <p>OCR, speech recognition, classifier, structured extraction, summary, translation, categorization, deterministic arithmetic, or local retrieval.</p>
+        </article>
+        <article class="card">
+          <h3>Outputs</h3>
+          <p>Dashboard card, searchable list, alert, summary, chart, exported file, in-app agent, or Android dynamic shortcut into that saved agent.</p>
+        </article>
+      </div>
+
+      <h3>Generated UI and calculations are practical when constrained</h3>
+      <p>The planner can choose approved KPI cards, bar/line/donut charts, lists, filters, insight panels, and buttons, then bind them to validated local queries. It can also choose registered operations such as sum, group by category, percentage change, recurring-payment detection, and budget comparison. Native Compose components render the result; Kotlin and SQL perform the arithmetic.</p>
+      <div class="callout success">
+        <p><strong>Recommended abstraction:</strong> Create behaves like a private, local low-code platform. The model chooses the workflow, labels, layout, data bindings, and insights; Copilot Local executes every operation through controlled building blocks.</p>
+      </div>
+
+      <div class="callout">
+        <p><strong>Pinning reality:</strong> the app can create dynamic or pinned shortcuts that deep-link into a saved local agent. It can also expose a configurable Android App Widget built from predefined layouts. It cannot safely generate arbitrary new widget code at runtime. For the hackathon, simulate “Add to home” and create an in-app card; a real dynamic shortcut is a stretch goal.</p>
+      </div>
+    </section>
+
+    <section id="expense">
+      <h2>The SMS expense idea is valuable—but permission-sensitive</h2>
+      <p>The intended experience is a persistent generated agent, not a one-time import tool. The user describes the tracker once, approves its data boundary, and receives an in-app card or home-screen entry. The agent performs an initial scan, maintains a local transaction ledger as new messages arrive, recalculates metrics, and opens into an already-current dashboard.</p>
+
+      <div class="callout danger">
+        <p><strong>Important correction:</strong> Google Play’s current policy does list “SMS-based money management,” such as budget tracking, as a possible exception for SMS permissions. It is still subject to declaration, review, core-functionality tests, minimum-use expectations, and all user-data policies. Approval is not automatic.</p>
+      </div>
+
+      <div class="table-wrap" role="region" aria-label="Financial data access options" tabindex="0">
+        <table>
+          <caption>Ways to power the expense agent</caption>
+          <thead>
+            <tr>
+              <th scope="col">Input route</th>
+              <th scope="col">Historical data</th>
+              <th scope="col">Hackathon</th>
+              <th scope="col">Production risk</th>
+              <th scope="col">Recommendation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>User imports sample/SMS export, CSV, or PDF</strong></td>
+              <td>Yes, for selected content</td>
+              <td><span class="tag good">Easy</span></td>
+              <td>Low</td>
+              <td>Keep as a fallback and testing route. It proves the pipeline but not the complete persistent-agent vision.</td>
+            </tr>
+            <tr>
+              <td><strong>READ_SMS with money-management declaration</strong></td>
+              <td>Yes</td>
+              <td><span class="tag mid">Possible</span></td>
+              <td>High scrutiny</td>
+              <td>This is the closest match to the intended product. Use a dedicated test phone and synthetic bank messages for the hackathon; treat Play approval as a separate product workstream.</td>
+            </tr>
+            <tr>
+              <td><strong>Notification listener</strong></td>
+              <td>No; future visible notifications only</td>
+              <td><span class="tag mid">Moderate</span></td>
+              <td>Moderate trust/policy burden</td>
+              <td>Useful opt-in companion after the demo; filter locally to selected apps and store only extracted transaction fields.</td>
+            </tr>
+            <tr>
+              <td><strong>Account Aggregator integration</strong></td>
+              <td>Potentially, through consented financial-data flows</td>
+              <td><span class="tag bad">Not in 3 days</span></td>
+              <td>Regulatory and partnership complexity</td>
+              <td>Strong long-term India route, but Copilot Local would need an appropriate regulated partner/role and cannot simply scrape AA data.</td>
+            </tr>
+            <tr>
+              <td><strong>Manual paste/share-to-app</strong></td>
+              <td>User-selected</td>
+              <td><span class="tag good">Easy</span></td>
+              <td>Lowest</td>
+              <td>Keep as a universal fallback and privacy exemplar.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>How the local pipeline should work</h3>
+      <ol class="checklist">
+        <li><strong>Create:</strong> the planner translates the user’s request into a validated expense-agent definition containing the SMS connector, triggers, dashboard, categories, alerts, retention, and surfaces.</li>
+        <li><strong>Bootstrap:</strong> after permission approval, scan available history and build the first local ledger and dashboard.</li>
+        <li><strong>Filter continuously:</strong> identify likely debit, credit, UPI, card, ATM, bill, refund, and balance messages using deterministic patterns or a tiny classifier.</li>
+        <li><strong>Extract:</strong> return strict JSON containing amount, direction, timestamp, merchant/counterparty, account suffix, channel, and confidence.</li>
+        <li><strong>Validate:</strong> reject malformed values, deduplicate, normalize currency, and preserve the source snippet locally for user correction.</li>
+        <li><strong>Categorize:</strong> use rules first, then a local model for ambiguous merchants. Let users correct categories and remember mappings.</li>
+        <li><strong>Compute:</strong> use normal code—not an LLM—for totals, trends, percentage changes, recurring payments, and budgets.</li>
+        <li><strong>Explain periodically:</strong> ask the model to summarize only validated aggregate data and cite the underlying categories or transactions.</li>
+        <li><strong>Refresh surfaces:</strong> update the in-app card and compact home widget from precomputed database values so opening the experience is immediate.</li>
+      </ol>
+
+      <div class="callout success">
+        <p><strong>Best demo choice:</strong> preload synthetic but India-realistic transaction SMS on a dedicated Android test phone. In airplane mode, ask Create to build the tracker, approve access, show the initial dashboard, deliver one new synthetic transaction message, and demonstrate that the ledger, visualization, and pinned agent update without another prompt or model download.</p>
+      </div>
+    </section>
+
+    <section id="use-cases">
+      <h2>India-first use cases worth exploring</h2>
+      <p class="lede">Prioritize jobs where privacy, unreliable connectivity, repeated personal context, or regional-language access make on-device execution meaningfully better—not merely technically impressive.</p>
+
+      <div class="table-wrap" role="region" aria-label="India-first use case feasibility" tabindex="0">
+        <table>
+          <caption>Use-case portfolio, ranked for product value and implementation reality</caption>
+          <thead>
+            <tr>
+              <th scope="col">Use case</th>
+              <th scope="col">Why local matters</th>
+              <th scope="col">Feasibility</th>
+              <th scope="col">Critical limitation</th>
+              <th scope="col">Good first version</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Private expense intelligence</strong></td>
+              <td>Financial messages and statements are highly personal; repeated analysis benefits from a local store.</td>
+              <td><span class="tag good">High technically</span></td>
+              <td>SMS permission review and extraction accuracy.</td>
+              <td>Create once, bootstrap approved SMS history, track new messages, maintain a deterministic dashboard, and generate periodic explanations.</td>
+            </tr>
+            <tr>
+              <td><strong>Scam-message explainer</strong></td>
+              <td>Messages need not leave the phone; can work without connectivity.</td>
+              <td><span class="tag good">High</span></td>
+              <td>False reassurance is dangerous; link/reputation checks may require network access.</td>
+              <td>Share or paste a message; highlight suspicious language and say “risk signal,” never “guaranteed safe.”</td>
+            </tr>
+            <tr>
+              <td><strong>Regional-language document helper</strong></td>
+              <td>IDs, forms, bills, and notices contain sensitive data and mixed scripts.</td>
+              <td><span class="tag mid">Medium</span></td>
+              <td>OCR quality and Indic-language performance vary by script and model.</td>
+              <td>Photograph a bill or notice; extract fields and explain in the selected language.</td>
+            </tr>
+            <tr>
+              <td><strong>Offline voice-note organizer</strong></td>
+              <td>Voice can remain private and usable in weak-network settings.</td>
+              <td><span class="tag mid">Medium</span></td>
+              <td>Streaming speech recognition and multilingual quality may require a separate model and substantial storage.</td>
+              <td>Short recorded clip → transcription → tasks and summary.</td>
+            </tr>
+            <tr>
+              <td><strong>Personal document Q&amp;A</strong></td>
+              <td>Medical reports, school notes, policies, and contracts should not be uploaded casually.</td>
+              <td><span class="tag mid">Medium</span></td>
+              <td>Local embeddings, indexing, OCR, and hallucination controls add complexity.</td>
+              <td>One user-selected text/PDF, chunked search, answer with quoted evidence.</td>
+            </tr>
+            <tr>
+              <td><strong>Accessible camera assistant</strong></td>
+              <td>Private surroundings stay local; useful when connectivity is unavailable.</td>
+              <td><span class="tag mid">Medium</span></td>
+              <td>Vision models are heavy and can miss hazards or text.</td>
+              <td>Describe one still image; avoid navigation or safety-critical promises.</td>
+            </tr>
+            <tr>
+              <td><strong>Study companion for downloaded material</strong></td>
+              <td>Works in low-connectivity areas and protects minors’ learning data.</td>
+              <td><span class="tag good">High</span></td>
+              <td>Source quality and unsupported languages.</td>
+              <td>Turn selected notes into a summary, quiz, glossary, and revision plan.</td>
+            </tr>
+            <tr>
+              <td><strong>Farmer field-note assistant</strong></td>
+              <td>Rural connectivity and language access make offline assistance attractive.</td>
+              <td><span class="tag mid">Medium concept</span></td>
+              <td>Crop diagnosis is safety/economic-impact sensitive and needs region-specific validation.</td>
+              <td>Organize observations and explain official guidance already loaded on device; do not prescribe chemicals.</td>
+            </tr>
+            <tr>
+              <td><strong>Household paperwork extractor</strong></td>
+              <td>Receipts, warranties, bills, and forms contain addresses and account details.</td>
+              <td><span class="tag good">High</span></td>
+              <td>Document layout diversity.</td>
+              <td>Capture a receipt, extract date/vendor/amount, and save to a local searchable ledger.</td>
+            </tr>
+            <tr>
+              <td><strong>Local-language communication helper</strong></td>
+              <td>Private messages can be rewritten, translated, or simplified offline.</td>
+              <td><span class="tag mid">Medium</span></td>
+              <td>Many small models are strongest in English; mixed-script and cultural nuance need testing.</td>
+              <td>Paste text and produce formal, simple, or translated variants with an accuracy warning.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Use cases to avoid in the first release</h3>
+      <div class="grid">
+        <article class="card">
+          <h3>Medical diagnosis or medication advice</h3>
+          <p>A local model does not remove clinical risk. Limit the experience to organizing records, translating plain language, and suggesting questions for a professional.</p>
+        </article>
+        <article class="card">
+          <h3>Autonomous financial transactions</h3>
+          <p>Do not allow a generated agent to send money, approve loans, trade, or change bank settings. Keep financial features read-only and insight-oriented.</p>
+        </article>
+        <article class="card">
+          <h3>Background surveillance</h3>
+          <p>A broad “watch everything on my phone” agent undermines the trust proposition and may conflict with platform policy. Inputs must be narrow, visible, and revocable.</p>
+        </article>
+        <article class="card">
+          <h3>Guaranteed scam or authenticity verdicts</h3>
+          <p>Models can identify warning signs, not certify safety. Present evidence, confidence, and a recommended next check.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="device-fit">
+      <h2>Can the complete experience run on a 6–8 GB phone?</h2>
+      <p class="lede">Yes, if the product treats the model as an occasional reasoning resource rather than a permanently running process. UI, SQLite storage, charts, triggers, and deterministic calculations are inexpensive; model weights, context cache, acceleration buffers, and multimodal preprocessing create the memory pressure.</p>
+
+      <div class="table-wrap" role="region" aria-label="Device memory tiers" tabindex="0">
+        <table>
+          <caption>Practical capability by Android memory tier</caption>
+          <thead>
+            <tr>
+              <th scope="col">Device class</th>
+              <th scope="col">Realistic product tier</th>
+              <th scope="col">Recommended constraints</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>6 GB RAM</strong></td>
+              <td>Constrained text agents, specialist classifiers, persistent dashboards, and short periodic insights.</td>
+              <td>Prefer smaller models; 2K–4K practical context; one model at a time; short outputs; no always-resident 3.8B model.</td>
+            </tr>
+            <tr>
+              <td><strong>8 GB RAM</strong></td>
+              <td>Recommended baseline for local Create with a quantized Phi-4 Mini-class model and richer text agents.</td>
+              <td>Int4 package, bounded context/output, sequential loading, batched insight generation, and device-specific benchmarking.</td>
+            </tr>
+            <tr>
+              <td><strong>12 GB+ RAM</strong></td>
+              <td>Advanced tier for longer documents, faster switching, and selected multimodal experiences.</td>
+              <td>Still enforce thermal, battery, storage, and model compatibility limits.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>The model should usually be unloaded</h3>
+      <div class="flow" aria-labelledby="memory-flow-title">
+        <h3 id="memory-flow-title">Efficient background path for the expense agent</h3>
+        <ol>
+          <li><strong>Message arrives</strong><span>Android delivers an approved event or scheduled scan.</span></li>
+          <li><strong>Lightweight filter</strong><span>Rules or a small classifier determine whether it is a transaction.</span></li>
+          <li><strong>Store and calculate</strong><span>Validated fields update Room/SQLite and deterministic metrics.</span></li>
+          <li><strong>Refresh dashboard</strong><span>Cards, charts, and widgets read already-computed values.</span></li>
+          <li><strong>Reason when useful</strong><span>Load the larger SLM only for ambiguity, agent creation, or periodic insights, then release it.</span></li>
+        </ol>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <h3>What belongs on the phone</h3>
+          <p>Prepared model packs, runtime adapters, permission-scoped connectors, agent schemas, Room/SQLite, deterministic analytics, native visualization components, schedules, notifications, and local audit/deletion controls.</p>
+        </article>
+        <article class="card">
+          <h3>What should happen before distribution</h3>
+          <p>Model conversion, quantization, operator validation, signing, tokenizer packaging, device benchmarking, and compatibility certification. An average phone should run a verified package, not convert arbitrary Hugging Face weights.</p>
+        </article>
+      </div>
+
+      <div class="callout warning">
+        <p><strong>Performance reality:</strong> a multi-gigabyte model may take several seconds to load, generated planning or insights may take 5–30 seconds or longer, and sustained generation can heat the phone. The dashboard itself should remain instant because it reads precomputed local data without loading the model.</p>
+      </div>
+    </section>
+
+    <section id="scope">
+      <h2>The hackathon scope: one vertical, three convincing surfaces</h2>
+
+      <div class="table-wrap" role="region" aria-label="Hackathon feature scope" tabindex="0">
+        <table>
+          <caption>Must, should, could, and explicitly out of scope</caption>
+          <thead>
+            <tr>
+              <th scope="col">Priority</th>
+              <th scope="col">Build</th>
+              <th scope="col">What can be simulated</th>
+              <th scope="col">Success condition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag good">Must</span></td>
+              <td>Android app shell; device profile; curated capability cards; one verified model pack; true airplane-mode inference; Create request; persistent expense-agent definition; synthetic SMS history; structured ledger, calculations, dashboard, and saved agent card.</td>
+              <td>Catalog can contain only 3–5 curated entries; compatibility can be rule-based for one demo phone.</td>
+              <td>A judge creates the agent once, then sees it maintain and reopen an already-updated dashboard with the network disabled.</td>
+            </tr>
+            <tr>
+              <td><span class="tag mid">Should</span></td>
+              <td>Function-call or schema-based planning; permission preview; historical bootstrap; new-message update; generated dashboard configuration; benchmark card; source/license details.</td>
+              <td>The builder may map only three known intents to templates.</td>
+              <td>The user feels they created a reusable, continuously maintained agent even though its building blocks are constrained.</td>
+            </tr>
+            <tr>
+              <td><span class="tag mid">Could</span></td>
+              <td>Dynamic shortcut; second use case such as scam-message explainer; local-language output; resumable model download.</td>
+              <td>One language pair and one pre-tested example are enough.</td>
+              <td>Add only after the core demo is stable.</td>
+            </tr>
+            <tr>
+              <td><span class="tag bad">Not now</span></td>
+              <td>Arbitrary Hugging Face execution; on-phone model conversion; full multimodality; production Play approval; Account Aggregator; generated native code; unrestricted UI generation; broad widget system; simultaneous multi-model execution.</td>
+              <td>Show these in a roadmap screen, not as broken controls.</td>
+              <td>The team does not spend the final day debugging infrastructure invisible to judges.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout warning">
+        <p><strong>Model recommendation for the demo:</strong> choose the smallest pre-converted package—ONNX or LiteRT-LM—that is already proven on your exact Android device and planning task. Phi-4 Mini Instruct is a credible Create planner because its model card supports tool-enabled function calling and Microsoft publishes an ONNX int4 CPU/mobile configuration. A 3.8B-class model can still be heavy; keep a smaller supported planner or fixed schema-mapping fallback.</p>
+      </div>
+    </section>
+
+    <section id="vibecode-plans">
+      <h2>Two step-by-step implementation plans for vibe coding</h2>
+      <p class="lede">Treat these as two connected workstreams. Plan 1 creates the reliable local-model product foundation. Plan 2 uses that foundation to create, run, visualize, and pin a persistent expense-management agent. Complete each step’s acceptance gate before asking an AI coding assistant to continue.</p>
+
+      <div class="callout warning">
+        <p><strong>Do not start by generating the full application.</strong> Ask the coding assistant for one vertical slice at a time, run it on the physical phone, share the exact build or runtime error, and request the smallest correction. Large “build the whole app” prompts produce incompatible dependencies, invented APIs, and code that has never exercised the model.</p>
+      </div>
+
+      <h3>Shared technical baseline</h3>
+      <div class="table-wrap" role="region" aria-label="Suggested Android technical baseline" tabindex="0">
+        <table>
+          <caption>Suggested stack for both plans</caption>
+          <thead>
+            <tr>
+              <th scope="col">Layer</th>
+              <th scope="col">Recommended choice</th>
+              <th scope="col">Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Application</strong></td>
+              <td>Kotlin, Jetpack Compose, Material 3, Navigation Compose</td>
+              <td>Native Android access, strong generated-code support, and one UI system for gallery, dashboards, and agent cards.</td>
+            </tr>
+            <tr>
+              <td><strong>Architecture</strong></td>
+              <td>Single app module initially; MVVM; repositories behind interfaces; Kotlin coroutines and Flow</td>
+              <td>Keeps the hackathon project understandable while preserving seams for models, downloads, data, and agents.</td>
+            </tr>
+            <tr>
+              <td><strong>Local persistence</strong></td>
+              <td>Room for agent and transaction data; DataStore for preferences</td>
+              <td>Observable dashboards, migrations, structured queries, and predictable local ownership.</td>
+            </tr>
+            <tr>
+              <td><strong>Background work</strong></td>
+              <td>WorkManager</td>
+              <td>Deferrable insight generation, retry behavior, battery constraints, and process-safe scheduling.</td>
+            </tr>
+            <tr>
+              <td><strong>Model runtime</strong></td>
+              <td>A <code>LocalModelRuntime</code> interface with one implementation: ONNX Runtime GenAI or LiteRT-LM</td>
+              <td>Lets the product remain runtime-neutral while the prototype integrates only one proven stack.</td>
+            </tr>
+            <tr>
+              <td><strong>Model artifact</strong></td>
+              <td>One pre-converted, quantized, checksummed package tested on the demo phone</td>
+              <td>Avoids on-device conversion and prevents runtime investigation from expanding during the hackathon.</td>
+            </tr>
+            <tr>
+              <td><strong>Home surface</strong></td>
+              <td>In-app agent card first, pinned dynamic shortcut second, Jetpack Glance widget as a stretch goal</td>
+              <td>Delivers the persistent-agent concept without making widget development a critical dependency.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <article class="card" style="margin-top:30px">
+        <p class="kicker">Plan 1</p>
+        <h3>Create the interface and local-model foundation</h3>
+        <p><strong>Outcome:</strong> a user can open Copilot Local, see device-appropriate experiences, download one verified model pack, run it without a network, and use it through a simple chat or prompt screen. Runtime terminology remains hidden unless the user opens advanced details.</p>
+      </article>
+
+      <div class="timeline">
+        <article class="day">
+          <p class="owner">Plan 1 · Step 1</p>
+          <h3>Prove the model on the physical phone before building the product UI</h3>
+          <p>Select one 8 GB Android phone if available. Test one official ONNX Phi mobile package or one validated LiteRT-LM package using an existing sample. Record the exact artifact, runtime version, ABI, context limit, load time, result time, and memory behavior.</p>
+          <div class="step-meta"><span class="tag good">Required</span><span class="tag">Runtime spike</span><span class="tag">Half day maximum</span></div>
+          <pre class="prompt">Help me run this existing [ONNX Runtime GenAI / LiteRT-LM] Android sample on an arm64 Android device. Use this exact model package and version: [paste details]. Do not redesign the sample. First list the required project settings and dependencies, then make the smallest changes needed to generate one local response. Add clear logging for model load, first token, completion, and errors.</pre>
+          <p><strong>Acceptance gate:</strong> the phone produces a response in airplane mode three times in succession. Stop or change the package if this gate fails.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 1 · Step 2</p>
+          <h3>Scaffold the Compose shell and navigation</h3>
+          <p>Create four routes: Explore, Chat, Create, and My Agents. Build a simple bottom navigation bar and placeholder screens. Keep all model logic out of composables.</p>
+          <pre class="prompt">Create a Kotlin Jetpack Compose Material 3 app shell with Navigation Compose and four top-level routes: Explore, Chat, Create, and My Agents. Use a single-activity architecture, adaptive spacing, accessible semantics, and state-hoisted composables. Add no model or network code yet. Include previews and a small navigation test.</pre>
+          <p><strong>Acceptance gate:</strong> the application installs, navigation survives rotation, and every route renders without runtime integration.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 1 · Step 3</p>
+          <h3>Define model-pack and device-fit contracts</h3>
+          <p>Create data classes for capability, artifact, runtime requirement, storage size, minimum memory tier, source, license, checksum, and verification status. Add a small bundled JSON catalog with three to five experience-oriented entries.</p>
+          <pre class="prompt">Add a model catalog domain layer. Define immutable Kotlin data classes for ModelPack, Capability, RuntimeRequirement, DeviceRequirement, Artifact, Publisher, LicenseInfo, and VerificationStatus. Load a bundled JSON catalog through a repository interface. Include one installed demo pack and several concept-only entries. Write parsing and compatibility-rule unit tests.</pre>
+          <p><strong>Acceptance gate:</strong> Explore shows capability cards such as Private Chat and Expense Tracker with Recommended, Experimental, or Incompatible status.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 1 · Step 4</p>
+          <h3>Build the device profiler</h3>
+          <p>Read Android version, architecture, memory class, available storage, and available runtime features. Convert technical values into a small <code>DeviceProfile</code> consumed by compatibility rules.</p>
+          <pre class="prompt">Implement DeviceProfileRepository for Android. Collect SDK version, supported ABIs, ActivityManager memory information, and app-private available storage. Keep chipset and accelerator detection optional and truthfully mark unknown values. Expose StateFlow&lt;DeviceProfile&gt;. Do not infer unsupported hardware capabilities.</pre>
+          <p><strong>Acceptance gate:</strong> model recommendations change from catalog rules and the interface explains each decision in plain language.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 1 · Step 5</p>
+          <h3>Implement verified model downloading and installation</h3>
+          <p>Download into app-private storage, show bytes and progress, support cancellation, verify the SHA-256 checksum, and move the completed package into a versioned model directory. For the hackathon, resume support can remain optional.</p>
+          <pre class="prompt">Implement a WorkManager-based model download pipeline for one HTTPS artifact. Stream to an app-private temporary file, expose progress through Flow, allow cancellation, verify a catalog-provided SHA-256 checksum, and atomically install into filesDir/models/{packId}/{version}. Never mark the model installed before verification. Surface actionable errors and add tests for checksum mismatch and interrupted files.</pre>
+          <p><strong>Acceptance gate:</strong> cancelling does not produce an installed state; a corrupt artifact fails visibly; a verified artifact survives application restart.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 1 · Step 6</p>
+          <h3>Wrap the chosen runtime behind one interface</h3>
+          <p>The rest of the app should not import runtime-specific classes. Use one request type for prompt, maximum output, temperature, and structured-output schema. Stream events for loading, tokens, completion, cancellation, and failure.</p>
+          <pre class="prompt">Extract the working local inference code behind a LocalModelRuntime interface. Define load(pack), generate(request): Flow&lt;GenerationEvent&gt;, cancel(), and unload(). Add Loading, Token, Completed, Cancelled, and Failed events. Implement only [OnnxLocalModelRuntime / LiteRtLocalModelRuntime]. Serialize model access with a Mutex and release native resources explicitly.</pre>
+          <p><strong>Acceptance gate:</strong> Chat uses only the interface, cancellation works, and leaving the screen does not leak or duplicate a generation session.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 1 · Step 7</p>
+          <h3>Finish the end-user model experience</h3>
+          <p>Add a model detail page with capability, download size, device fit, privacy statement, publisher, and license. Put runtime, quantization, provider, and benchmark values inside an Advanced details disclosure.</p>
+          <pre class="prompt">Build ModelPackDetailScreen and ChatScreen in Compose. Prioritize capability, device fit, download size, and data behavior. Place runtime, format, quantization, execution provider, and test-device benchmarks inside an expandable Advanced details section. Stream local generation and preserve chat state across recomposition.</pre>
+          <p><strong>Acceptance gate:</strong> a test user can install and use the local model without knowing what ONNX or LiteRT means.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 1 · Step 8</p>
+          <h3>Add the proof and failure states</h3>
+          <p>Show offline readiness, model storage management, load progress, incompatible-device messaging, low-storage errors, and a basic benchmark. Confirm that no personal prompt traffic leaves the phone.</p>
+          <pre class="prompt">Add an Offline Ready state, model delete action, storage warning, runtime health check, and a benchmark that records model load time and total generation time on this device. Keep measurements labeled as device-specific. Add a diagnostics view suitable for a hackathon demo and verify that generation works with airplane mode enabled.</pre>
+          <p><strong>Plan 1 complete when:</strong> the app moves from discovery to verified download to local inference on the physical phone, with an understandable end-user experience.</p>
+        </article>
+      </div>
+
+      <article class="card" style="margin-top:42px">
+        <p class="kicker">Plan 2</p>
+        <h3>Vibe-code Create, the persistent expense agent, and pinning</h3>
+        <p><strong>Outcome:</strong> the user asks Create for an SMS spending tracker, reviews its access, creates it once, and receives a persistent dashboard that processes approved transaction messages, updates calculations, generates periodic insights, and opens from My Agents or the home screen.</p>
+      </article>
+
+      <div class="timeline">
+        <article class="day">
+          <p class="owner">Plan 2 · Step 1</p>
+          <h3>Define the safe agent language before prompting a model</h3>
+          <p>Create a versioned agent schema. Limit the first build to registered values such as <code>transaction_sms</code>, <code>on_new_message</code>, <code>extract_transaction</code>, <code>expense_overview</code>, and <code>in_app_card</code>. The schema should reject unknown connectors, operations, calculations, and surfaces.</p>
+          <pre class="prompt">Design a versioned Kotlin agent-definition domain model for a constrained local orchestration platform. Include id, name, connector, triggers, transformations, calculations, dashboard sections, alerts, permissions, retention, and surfaces. Use sealed interfaces or enums for all executable capabilities. Add validation that rejects unknown or unsupported values. Create one valid expense-agent fixture and invalid fixtures with tests.</pre>
+          <p><strong>Acceptance gate:</strong> application code can serialize, validate, save, and reload an expense-agent definition without using an LLM.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 2 · Step 2</p>
+          <h3>Build the Create conversation and deterministic fallback</h3>
+          <p>Start with a guided natural-language screen. Recognize the expense-tracker intent and map it to the valid fixture. This gives the team a functioning creation flow before adding model planning.</p>
+          <pre class="prompt">Build a CreateScreen where the user describes an agent. Add a CreateAgentViewModel and AgentPlanner interface. Implement TemplateAgentPlanner that recognizes an expense-tracking request and returns the validated expense-agent fixture plus any clarification fields. Show planning progress and a preview. Do not call the local model yet.</pre>
+          <p><strong>Acceptance gate:</strong> entering “Track my spending from SMS and show monthly insights” creates a valid preview every time.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 2 · Step 3</p>
+          <h3>Add local LLM planning through structured output</h3>
+          <p>Provide the model with the capability catalog and JSON schema. Ask it to select registered blocks and fill parameters. Parse and validate the result. If generation or validation fails, show the template proposal rather than inventing a success state.</p>
+          <pre class="prompt">Implement LocalLlmAgentPlanner using LocalModelRuntime. Give the model a compact system prompt containing only the registered agent capabilities and the expense-agent JSON schema. Request structured output or a tool call. Parse strictly, validate through AgentDefinitionValidator, and return explicit planning or validation errors. Use TemplateAgentPlanner only as a labeled fallback for the supported demo intent.</pre>
+          <p><strong>Acceptance gate:</strong> several phrasings produce the same safe expense-agent structure; unsupported requests receive a clear limitation or alternative.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 2 · Step 4</p>
+          <h3>Create the permission and agent-plan review</h3>
+          <p>Before provisioning, show the data source, historical scan, new-message trigger, local retention, model usage, calculations, dashboard, network behavior, and deletion control. The user must explicitly create the agent after reviewing this page.</p>
+          <pre class="prompt">Build AgentPlanReviewScreen from a validated AgentDefinition. Explain permissions and behavior in plain language. Group sections into Data access, When it runs, What it calculates, AI usage, Dashboard, Storage, and Home-screen access. Require explicit confirmation. Do not request Android permissions until the user confirms the plan.</pre>
+          <p><strong>Acceptance gate:</strong> the application can explain every enabled capability without reading raw JSON.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 2 · Step 5</p>
+          <h3>Implement the SMS connector on a dedicated test build</h3>
+          <p>Use synthetic transaction messages on a dedicated phone. Query existing SMS for the initial bootstrap and handle new approved messages for updates. Place all platform access behind <code>TransactionMessageSource</code>. Keep file import as a fallback source.</p>
+          <pre class="prompt">Implement an Android TransactionMessageSource interface with two methods: loadHistoricalMessages() and observeNewMessages(). Add an SmsTransactionMessageSource for a sideloaded hackathon build using the minimum required permissions and a FileTransactionMessageSource fallback for JSON fixtures. Return domain objects, not Android Cursor instances. Add permission-denied and empty-state handling. Do not upload or log message bodies.</pre>
+          <p><strong>Acceptance gate:</strong> the test build reads synthetic history after consent, receives one new synthetic message, and the fallback fixture works when permission is denied.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 2 · Step 6</p>
+          <h3>Build transaction extraction and validation</h3>
+          <p>Use rules for obvious message patterns and the local model for ambiguous cases. Store confidence and source identity. Never accept an LLM amount without numeric parsing, currency validation, and deduplication.</p>
+          <pre class="prompt">Create TransactionExtractor with a deterministic parser first and an optional LocalModelTransactionExtractor fallback that returns strict JSON. Extract amount, currency, debit-or-credit, timestamp, merchant, account suffix, channel, reference, and confidence. Add TransactionValidator and stable deduplication. Cover UPI, card, ATM, bill, refund, salary, duplicate, malformed, and non-financial fixtures with tests.</pre>
+          <p><strong>Acceptance gate:</strong> amount and debit/credit direction meet the target accuracy on the synthetic dataset, and malformed messages cannot enter the ledger silently.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 2 · Step 7</p>
+          <h3>Create the persistent local data model</h3>
+          <p>Store agent definitions, transactions, category corrections, computed snapshots, and generated insights in Room. Keep raw message retention optional and short. Expose dashboard queries as Flow.</p>
+          <pre class="prompt">Add Room entities and DAOs for AgentEntity, TransactionEntity, MerchantRuleEntity, MetricSnapshotEntity, and InsightEntity. Use stable IDs, indices for agent/time/category, and transactional upserts. Expose Flow queries for current-month total, previous-month comparison, category totals, six-month trend, recent transactions, and recurring merchants. Include delete-agent-and-data behavior.</pre>
+          <p><strong>Acceptance gate:</strong> restarting the app preserves the agent and dashboard, while deleting the agent removes its associated local data.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 2 · Step 8</p>
+          <h3>Generate a dashboard from approved components</h3>
+          <p>Allow the agent definition to choose from KPI row, category chart, trend chart, insight list, transaction list, and filter controls. Render only registered native Compose components. Use deterministic database queries for every displayed number.</p>
+          <pre class="prompt">Build an AgentDashboardRenderer that maps validated DashboardSection definitions to native Compose components. Support KpiRow, CategoryBreakdown, MonthlyTrend, InsightList, RecentTransactions, and DateFilter. Bind components to ExpenseDashboardViewModel flows backed by Room queries. Unknown sections must fail validation rather than disappear. Add loading, empty, error, and correction states.</pre>
+          <p><strong>Acceptance gate:</strong> changing the dashboard definition changes component selection and order without generating new Kotlin code.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 2 · Step 9</p>
+          <h3>Keep the dashboard updated without keeping the SLM loaded</h3>
+          <p>Process new messages with lightweight logic, update deterministic metrics, and enqueue deeper analysis. Use the model only for ambiguity and periodic explanations. Refresh the UI and home surface from stored values.</p>
+          <pre class="prompt">Implement ExpenseAgentOrchestrator. On bootstrap or a new transaction message, filter, extract, validate, deduplicate, categorize, persist, and recompute metrics. Enqueue constrained WorkManager jobs for weekly or on-demand insight generation. Do not keep LocalModelRuntime loaded between jobs. Make all steps idempotent and expose observable agent status.</pre>
+          <p><strong>Acceptance gate:</strong> one new synthetic SMS updates totals and charts without reopening Create, and a failed insight job does not block the ledger update.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 2 · Step 10</p>
+          <h3>Add My Agents and pinning</h3>
+          <p>Show each created agent as a live in-app card. Add a pinned dynamic shortcut that deep-links to the agent ID. If time remains, build one fixed Glance widget template showing monthly spend and month-over-month change.</p>
+          <pre class="prompt">Build MyAgentsScreen with live summary cards from Room. Add a stable deep link route for agent/{agentId}. Implement a user-initiated pinned shortcut with ShortcutManagerCompat that opens the correct agent. Then, only as an optional step, add one Jetpack Glance expense widget backed by precomputed Room data. Do not run model inference from the widget.</pre>
+          <p><strong>Acceptance gate:</strong> the agent opens from My Agents and the pinned shortcut after process death; the displayed summary matches the dashboard database.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Plan 2 · Step 11</p>
+          <h3>Complete trust controls and the live demo</h3>
+          <p>Add pause, refresh, edit, permission status, local-data size, last-updated time, and delete controls. Run the final scenario in airplane mode and record a fallback video.</p>
+          <pre class="prompt">Add AgentSettingsScreen with pause/resume, refresh now, edit supported parameters, permission status, last successful run, local storage used, export summary, and delete agent with data. Add an audit timeline that records local processing events without raw SMS content. Create UI tests for create, approve, bootstrap, reopen, pause, and delete.</pre>
+          <p><strong>Plan 2 complete when:</strong> a user creates the expense agent once, sees an initial visualization-rich dashboard, receives an update from a new synthetic SMS, and reopens the current experience from a pinned surface without downloading another model or repeating the prompt.</p>
+        </article>
+      </div>
+
+      <h3>Recommended implementation order across both plans</h3>
+      <ol class="checklist">
+        <li>Prove one local model on the physical phone.</li>
+        <li>Build the app shell, model-pack contract, and runtime interface.</li>
+        <li>Complete verified installation and a basic local Chat experience.</li>
+        <li>Define and validate the agent schema without an LLM.</li>
+        <li>Build Create with a deterministic expense template.</li>
+        <li>Add LLM-based planning after the template flow works.</li>
+        <li>Connect synthetic SMS, Room, calculations, and dashboard components.</li>
+        <li>Add background updates, My Agents, and a pinned shortcut.</li>
+        <li>Attempt the home-screen widget only after the complete scenario works repeatedly.</li>
+      </ol>
+
+      <div class="callout success">
+        <p><strong>Minimum winning prototype:</strong> one verified local model pack, one Create request, one validated expense-agent schema, one synthetic SMS connector, one persistent Room ledger, one generated dashboard assembled from native components, and one saved agent card. Everything else strengthens the demo but should not delay this path.</p>
+      </div>
+    </section>
+
+    <section id="plan">
+      <h2>Integrated 2–3 day hackathon schedule</h2>
+      <p class="lede">Because the team is design-heavy and AI-assisted, reduce unknowns immediately. The first milestone is not a beautiful home screen; it is one token generated locally on the demo phone.</p>
+
+      <div class="timeline">
+        <article class="day">
+          <p class="owner">Before the clock starts · all four</p>
+          <h3>Lock the demo device, runtime, and evidence</h3>
+          <ul class="checklist">
+            <li>Choose one physical Android phone with at least 8 GB RAM and ample free storage if available.</li>
+            <li>Run an existing ONNX Runtime GenAI or LiteRT-LM sample with the selected model package on that exact phone.</li>
+            <li>Freeze the model artifact, runtime commit/version, ABI, generation parameters, and tokenizer files.</li>
+            <li>Create and preload 30–60 synthetic transaction SMS covering UPI, cards, cash withdrawal, refunds, salary credits, bills, duplicates, and ambiguous merchants.</li>
+            <li>Prepare a fallback: a smaller supported classifier/planner or deterministic schema-mapping step while keeping the agent and analysis pipeline genuinely local.</li>
+          </ul>
+          <p><strong>Exit gate:</strong> local inference works in airplane mode. If it does not, the team must switch to a smaller supported model before designing the rest.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Day 1 morning · pair A: runtime · pair B: product shell</p>
+          <h3>Build the thinnest end-to-end slice</h3>
+          <ul class="checklist">
+            <li>Pair A wraps the known inference sample behind one stable function: input text → streamed output or strict JSON.</li>
+            <li>Pair A builds deterministic parsing validation, local persistence, aggregation, and chart-ready data.</li>
+            <li>Pair B creates three Compose screens: Home, Model Detail, and Expense Agent.</li>
+            <li>Use hard-coded model metadata for the chosen package: size, capability, license, device status, and privacy behavior.</li>
+            <li>Connect the test phone’s synthetic SMS history to extraction and render a basic monthly summary.</li>
+          </ul>
+          <p><strong>Exit gate:</strong> one approved creation flow turns historical test messages into a persistent structured ledger and dashboard, entirely on device.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Day 1 afternoon · all four in two pairs</p>
+          <h3>Make the platform idea visible</h3>
+          <ul class="checklist">
+            <li>Add a catalog with 3–5 curated capability cards: Phi chat, private expense analyst, image explainer, voice notes, and scam-message explainer.</li>
+            <li>Add device-fit badges driven by simple rules and a measured benchmark for the installed model.</li>
+            <li>Show download/install state even if only one model is truly downloadable; mark concept-only entries clearly.</li>
+            <li>Create “My local agents” with a saved expense card and privacy/permission summary.</li>
+            <li>Add visible network state and a “runs locally” explanation grounded in actual behavior.</li>
+          </ul>
+          <p><strong>Exit gate:</strong> a new user can understand the value without hearing the pitch.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Day 2 morning · pair A: builder · pair B: trust and polish</p>
+          <h3>Add constrained creation and trustworthy results</h3>
+          <ul class="checklist">
+            <li>Create a small agent schema with trigger, connector, transform, permissions, calculations, dashboard, surfaces, and schedule fields.</li>
+            <li>Support three recognized creation intents: “analyze expenses,” “check a suspicious message,” and “summarize a document.”</li>
+            <li>Use Phi-4 Mini Instruct function calling or structured generation to fill the schema, with a deterministic mapping fallback.</li>
+            <li>Render an agent preview before saving: data accessed, triggers, calculations, model use, network behavior, storage, dashboard, and deletion control.</li>
+            <li>Add transaction correction, category correction, confidence states, and links from each insight to supporting records.</li>
+            <li>Keep arithmetic deterministic. Use the model only for extraction, categorization, and explanation.</li>
+          </ul>
+          <p><strong>Exit gate:</strong> a judge can describe the expense workflow, approve its data boundary, save it, and use it.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Day 2 afternoon · all four</p>
+          <h3>Stabilize, measure, and script the story</h3>
+          <ul class="checklist">
+            <li>Test cold start, model load, repeated runs, rotation/backgrounding, low storage, malformed inputs, and airplane mode.</li>
+            <li>Record measured model size, load time, time to first token/result, total task time, peak memory if accessible, and extraction accuracy on the sample set.</li>
+            <li>Remove every control that is not functional or explicitly labeled as roadmap.</li>
+            <li>Prepare a 3-minute live demo and a screen recording fallback from the same physical device.</li>
+            <li>Rehearse the honest tradeoff statement: “curated compatibility first; open catalog later.”</li>
+          </ul>
+          <p><strong>Exit gate:</strong> three consecutive demo runs succeed with airplane mode enabled.</p>
+        </article>
+
+        <article class="day">
+          <p class="owner">Optional Day 3 · only after stability</p>
+          <h3>Add one memorable differentiator</h3>
+          <ul class="checklist">
+            <li>Preferred: output the expense explanation in one well-tested Indian language.</li>
+            <li>Alternative: add a dynamic Android shortcut to open the saved expense agent.</li>
+            <li>Alternative: add the scam-message explainer using share/paste input.</li>
+            <li>Do not add a second model runtime or a new sensitive permission.</li>
+          </ul>
+          <p><strong>Exit gate:</strong> the addition strengthens the story without reducing demo reliability.</p>
+        </article>
+      </div>
+
+      <h3>Suggested team split</h3>
+      <div class="grid">
+        <article class="card">
+          <h3>Designer 1 — product and demo owner</h3>
+          <p>Scope, narrative, acceptance criteria, demo data, integration decisions, and ruthless removal of non-working surfaces.</p>
+        </article>
+        <article class="card">
+          <h3>Designer 2 — Android shell owner</h3>
+          <p>Compose navigation, catalog, model cards, device profile, saved-agent surfaces, shortcuts, and visual quality.</p>
+        </article>
+        <article class="card">
+          <h3>Designer 3 — local intelligence owner</h3>
+          <p>Existing sample integration, prompt/schema design, extraction validation, inference parameters, and performance measurements.</p>
+        </article>
+        <article class="card">
+          <h3>Designer 4 — data and trust owner</h3>
+          <p>Import flow, local database, deterministic analytics, correction UX, privacy states, permission preview, and test cases.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="evaluation">
+      <h2>How to evaluate whether the idea actually works</h2>
+      <p>Judge the prototype on user value and system truth, not the number of AI surfaces shown. Record results on the real demo phone.</p>
+
+      <div class="table-wrap" role="region" aria-label="Prototype evaluation scorecard" tabindex="0">
+        <table>
+          <caption>Hackathon evaluation scorecard</caption>
+          <thead>
+            <tr>
+              <th scope="col">Dimension</th>
+              <th scope="col">Weight</th>
+              <th scope="col">Evidence</th>
+              <th scope="col">Target for a credible demo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Locality and privacy truth</strong></td>
+              <td>20%</td>
+              <td>Airplane-mode run, network inspection, clear local storage/deletion behavior.</td>
+              <td>Core inference and analysis complete with connectivity disabled.</td>
+            </tr>
+            <tr>
+              <td><strong>End-to-end usefulness</strong></td>
+              <td>20%</td>
+              <td>Can a user move from raw messages to a corrected ledger and actionable explanation?</td>
+              <td>One workflow solves a recognizable problem without presenter intervention.</td>
+            </tr>
+            <tr>
+              <td><strong>Extraction correctness</strong></td>
+              <td>15%</td>
+              <td>Field-level precision/recall or simple exact-match rate on the prepared message set.</td>
+              <td>At least 90% correct amount and direction on the curated demo set; errors are visibly correctable.</td>
+            </tr>
+            <tr>
+              <td><strong>Performance</strong></td>
+              <td>15%</td>
+              <td>Cold load, task completion time, memory pressure, device heat, repeated runs.</td>
+              <td>Useful feedback within 2 seconds and a completed demo task within roughly 30 seconds on the chosen phone.</td>
+            </tr>
+            <tr>
+              <td><strong>Compatibility clarity</strong></td>
+              <td>10%</td>
+              <td>Users understand why a model is or is not recommended.</td>
+              <td>No unexplained technical labels; recommendation includes storage and experience impact.</td>
+            </tr>
+            <tr>
+              <td><strong>Creation mental model</strong></td>
+              <td>10%</td>
+              <td>User test: describe a workflow, inspect permissions, save it, reopen it.</td>
+              <td>Three of four test users complete the flow without being told it is template-based.</td>
+            </tr>
+            <tr>
+              <td><strong>Trust and control</strong></td>
+              <td>10%</td>
+              <td>Consent, source traceability, corrections, delete/reset, and uncertainty.</td>
+              <td>Every insight can be traced to local records and every data input can be revoked or deleted.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Post-hackathon validation questions</h3>
+      <ol class="checklist">
+        <li>Do users choose local processing when it requires a 2–4 GB download?</li>
+        <li>Do people understand a “model fit” recommendation, or do they only care whether the experience works?</li>
+        <li>Which inputs will users grant: files, notifications, SMS, camera, microphone, or none?</li>
+        <li>How much slower can local inference be before privacy stops compensating for the delay?</li>
+        <li>Can small models reliably extract mixed English/Hindi/transliterated transaction text across banks?</li>
+        <li>Will publishers provide verified ONNX or LiteRT-LM packages with enough metadata to support safe discovery?</li>
+        <li>Does Create deliver durable value beyond chat and a curated template gallery?</li>
+        <li>Can a persistent agent remain useful on a 6 GB phone without keeping a large model resident?</li>
+      </ol>
+    </section>
+
+    <section id="risks">
+      <h2>Primary risks and how to contain them</h2>
+      <div class="table-wrap" role="region" aria-label="Risk register" tabindex="0">
+        <table>
+          <caption>Risk register</caption>
+          <thead>
+            <tr>
+              <th scope="col">Risk</th>
+              <th scope="col">Likelihood</th>
+              <th scope="col">Impact</th>
+              <th scope="col">Mitigation</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Mobile runtime integration consumes the hackathon</td>
+              <td>High</td>
+              <td>Critical</td>
+              <td>Choose either ORT GenAI or LiteRT-LM, start from a proven sample, freeze versions, use one device, and maintain a smaller-model fallback.</td>
+            </tr>
+            <tr>
+              <td>Model does not fit or performs poorly</td>
+              <td>High</td>
+              <td>High</td>
+              <td>Use int4 mobile package, short context, bounded output, serial execution, and aggressive device testing.</td>
+            </tr>
+            <tr>
+              <td>“Any Hugging Face model” promise fails</td>
+              <td>High</td>
+              <td>High</td>
+              <td>Launch with a curated registry. Add community submissions only after automated validation and real-device testing.</td>
+            </tr>
+            <tr>
+              <td>Generated agent accesses more data than expected</td>
+              <td>Medium</td>
+              <td>Critical</td>
+              <td>Declarative agent definitions, permission allowlist, human-readable preview, no arbitrary code, per-agent revocation.</td>
+            </tr>
+            <tr>
+              <td>Expense totals are hallucinated</td>
+              <td>Medium</td>
+              <td>High</td>
+              <td>Use deterministic calculations and schema validation; model writes explanations only from computed aggregates.</td>
+            </tr>
+            <tr>
+              <td>SMS permission blocks distribution</td>
+              <td>Medium</td>
+              <td>High</td>
+              <td>Use a dedicated sideloaded test build and synthetic SMS for the persistent demo. Pursue Play declaration separately; retain file/share routes as fallbacks.</td>
+            </tr>
+            <tr>
+              <td>Regional-language quality is overstated</td>
+              <td>High</td>
+              <td>Medium</td>
+              <td>Test named languages and scripts individually; publish capability cards rather than “supports Indian languages.”</td>
+            </tr>
+            <tr>
+              <td>Large downloads exclude mainstream devices</td>
+              <td>High</td>
+              <td>High</td>
+              <td>Create capability tiers, smaller specialist models, Wi-Fi/resume controls, storage cleanup, and PC handoff later.</td>
+            </tr>
+            <tr>
+              <td>Privacy claim is weakened by analytics or downloads</td>
+              <td>Medium</td>
+              <td>High</td>
+              <td>Say “personal data and inference stay local,” not “the app never uses the internet.” Separate catalog/download traffic from inference.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="pitch">
+      <h2>A three-minute demo that judges will remember</h2>
+      <div class="grid">
+        <article class="card">
+          <p class="kicker">0:00–0:25 · problem</p>
+          <h3>AI is powerful, but personal data is the price</h3>
+          <p>Show a bank transaction message and ask: “Why should this travel to a server just to tell me what I spent?”</p>
+        </article>
+        <article class="card">
+          <p class="kicker">0:25–0:55 · product</p>
+          <h3>A gallery that knows your phone</h3>
+          <p>Open Copilot Local and show capability-oriented recommendations. Reveal the Phi model and runtime only under advanced details to demonstrate that users do not need to understand the stack.</p>
+        </article>
+        <article class="card">
+          <p class="kicker">0:55–1:45 · creation</p>
+          <h3>Describe the agent</h3>
+          <p>Type: “Track my spending from transaction SMS, categorize it, and explain unusual changes.” Show the generated agent plan, dashboard preview, ongoing trigger, and privacy boundary, then create it.</p>
+        </article>
+        <article class="card">
+          <p class="kicker">1:45–2:25 · proof</p>
+          <h3>Airplane mode, persistent result</h3>
+          <p>Enable airplane mode. Open the saved agent to an already-populated dashboard, deliver a new synthetic transaction SMS, and show the ledger, chart, and widget/card update without another prompt.</p>
+        </article>
+        <article class="card">
+          <p class="kicker">2:25–2:45 · ecosystem</p>
+          <h3>More than finance</h3>
+          <p>Return to cards for scam explanation, documents, voice notes, study, accessibility, and regional-language communication.</p>
+        </article>
+        <article class="card">
+          <p class="kicker">2:45–3:00 · close</p>
+          <h3>Your data. Your model. Your device.</h3>
+          <p>Close on Microsoft’s advantage: trusted Phi experiences and portable, runtime-neutral local agents across phone and PC.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>Final recommendation</h2>
+      <div class="callout success">
+        <p><strong>Proceed, with a narrower promise.</strong> Copilot Local is a strong hackathon idea if the team presents it as a curated, compatibility-aware, private AI workspace—not a universal model marketplace that already supports every model and data source.</p>
+        <p>Build Explore, Chat, and Create as distinct surfaces. Make the persistent SMS expense agent the technical proof: created once, permission-scoped, locally stored, automatically maintained, visualization-rich, and available as an in-app card or home-screen entry. Treat unrestricted Hugging Face execution, production permission approval, broad multimodality, Account Aggregator integration, arbitrary generated code, and cross-device portability as roadmap items.</p>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2>Frequently asked questions</h2>
+
+      <details>
+        <summary>Is ONNX Runtime better than LiteRT for this product?</summary>
+        <div>
+          <p>Not universally. Microsoft can use either. LiteRT has a natural Android-first advantage, while ONNX Runtime has a stronger first-party Phi and cross-platform portability story. Integrate one proven runtime for the hackathon and preserve a runtime-adapter boundary for later expansion.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Are Phi models already available in both formats?</summary>
+        <div>
+          <p>Not with equal first-party coverage. Microsoft publishes multiple official ONNX Phi packages, including a Phi-4 Mini Instruct int4 CPU/mobile configuration. Selected LiteRT-LM Phi packages exist as community conversions, but Microsoft does not currently provide equally broad first-party LiteRT distribution and maintenance.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Do end users need to know whether an agent uses ONNX Runtime or LiteRT?</summary>
+        <div>
+          <p>No. Users should choose an experience and see whether it is recommended for their device, its download size, expected performance, and data access. Runtime and quantization belong under advanced or developer details.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>How is Create different from chatting with a downloaded model?</summary>
+        <div>
+          <p>Chat returns an answer for the current conversation. Create turns a request into a persistent, permission-scoped agent containing data connectors, triggers, calculations, storage, a generated dashboard, and saved surfaces that continue updating after the conversation ends.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Is Create itself powered by an LLM?</summary>
+        <div>
+          <p>Yes. An instruction-following model can interpret the request and emit a structured agent plan or function call. Copilot Local must still provide the schemas, validator, permission broker, registered tools, scheduler, database, visualization renderer, and execution engine. Phi-4 Mini Instruct is a plausible planner because its official model card describes tool-enabled function calling.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Can Create generate new UI and calculations safely?</summary>
+        <div>
+          <p>Yes, by configuring approved components. The planner may select KPI cards, charts, lists, filters, labels, and validated queries. Native Compose components render the interface, while Kotlin and SQL execute registered calculations. It should not generate and execute arbitrary Kotlin or JavaScript.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Can users download any model from Hugging Face and run it?</summary>
+        <div>
+          <p>No. ONNX Runtime needs an ONNX-compatible model package, and ORT GenAI supports specific model architectures. The package also needs compatible operators, tokenizer and configuration files, an appropriate quantization, a usable license, and a size that fits the phone. Start with a curated allowlist.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Can Phi-4 Mini run on an Android phone?</summary>
+        <div>
+          <p>Microsoft publishes a Phi-4 Mini ONNX int4 configuration described for CPU and mobile use. That makes it a legitimate candidate, not a guarantee of a good experience on every phone. A 3.8B-class model still needs substantial storage, memory, and patient performance testing. Device-specific benchmarking is essential.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Should the hackathon app request SMS permission?</summary>
+        <div>
+          <p>The ideal persistent demo should use a dedicated test phone, synthetic transaction messages, and a sideloaded build if the team can implement SMS access reliably. Keep import as a fallback. A production money-management app may seek Google Play’s listed SMS permission exception, but it requires declaration and review and should not be assumed.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Will everything truly stay offline?</summary>
+        <div>
+          <p>Inference and personal-data processing can stay offline after a model is installed. Model discovery and download still require a network unless packages are bundled or transferred locally. Phrase the promise precisely: “Your prompts and personal data stay on this device; internet is used only for catalog and model downloads.”</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Can an agent be pinned to the Android home screen?</summary>
+        <div>
+          <p>Yes, as a shortcut that opens a saved agent, or through a configurable widget built from layouts included in the app. The widget should show compact precomputed values and open the rich dashboard. The app should not generate arbitrary executable widget code.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Can the full experience run on a phone with 6–8 GB RAM?</summary>
+        <div>
+          <p>Yes, with tiered capability. Six-gigabyte phones should favor smaller models, short contexts, and constrained agents. Eight gigabytes is the recommended baseline for a quantized 3.8B-class planner. The larger model should load only for creation, ambiguity, or periodic insight generation; dashboards and continuous calculations should run without it.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Can four designers build this in two or three days?</summary>
+        <div>
+          <p>They can build the narrowed prototype if local inference is proven before the hackathon and they start from existing samples. They cannot responsibly build the original full platform in that time. The runtime integration is the largest unknown and should be resolved before visual polish.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>What is the most defensible long-term business or platform angle?</summary>
+        <div>
+          <p>A trusted distribution and execution layer for signed local-agent definitions across Android and Windows is more defensible than a model gallery alone. Microsoft could curate model packs, compatibility data, enterprise skill packs, policy-aware connectors, and multiple runtime adapters.</p>
+        </div>
+      </details>
+    </section>
+
+    <section>
+      <h2>Sources and accuracy notes</h2>
+      <p class="small">The runtime and policy landscape changes quickly. The statements below were checked against the linked material on 10 September 2026. Device performance claims should be treated as hypotheses until measured on the target phone.</p>
+      <ol class="sources">
+        <li><a href="https://github.com/google-ai-edge/gallery">Google AI Edge Gallery — official GitHub repository</a>. Feature list includes local inference, model management and benchmarking, Hugging Face integration, Agent Skills, chat, image, audio, prompt lab, and mobile actions.</li>
+        <li><a href="https://developers.google.com/edge/litert">Google LiteRT documentation</a>. Describes LiteRT as the next generation of the TensorFlow Lite foundation for edge execution.</li>
+        <li><a href="https://onnxruntime.ai/docs/genai/">ONNX Runtime generate API documentation</a>. Describes the high-level generation loop and labels the API as preview and subject to change.</li>
+        <li><a href="https://github.com/microsoft/onnxruntime-genai">Microsoft ONNX Runtime GenAI — official repository</a>. Support matrix includes Android, Java via source build, Phi language/vision architectures, structured generation, and hardware providers including QNN.</li>
+        <li><a href="https://onnxruntime.ai/docs/tutorials/mobile/">ONNX Runtime mobile development guide</a>. Documents ONNX model requirements, Android CPU/XNNPACK/NNAPI options, device-specific performance, quantization, and custom runtime builds.</li>
+        <li><a href="https://huggingface.co/microsoft/Phi-4-mini-instruct-onnx">Microsoft Phi-4 Mini Instruct ONNX model card</a>. Lists an int4 CPU/mobile configuration and notes that optimized output may differ slightly from the base model.</li>
+        <li><a href="https://huggingface.co/microsoft/Phi-4-mini-instruct">Microsoft Phi-4 Mini Instruct model card</a>. Describes instruction following, function-calling improvements, and the tool-enabled function-calling prompt format relevant to Create.</li>
+        <li><a href="https://huggingface.co/litert-community">LiteRT Community on Hugging Face</a>. Hosts ready-to-run community-converted LiteRT and LiteRT-LM packages and documents contribution requirements.</li>
+        <li><a href="https://huggingface.co/litert-community/Phi-4-mini-reasoning">Community Phi-4 Mini Reasoning LiteRT-LM package</a>. An example of a non-Microsoft Phi conversion with a roughly 2.6 GB int4 bundle and community-reported device measurements.</li>
+        <li><a href="https://support.google.com/googleplay/android-developer/answer/10208820">Google Play SMS and Call Log permission policy</a>. Lists permitted/default-handler uses, reviewed exceptions including SMS-based money management, declaration requirements, and disallowed uses.</li>
+        <li><a href="https://developer.android.com/reference/android/service/notification/NotificationListenerService">Android NotificationListenerService documentation</a>. Relevant to explicitly user-enabled processing of future notifications.</li>
+        <li><a href="https://developer.android.com/training/data-storage/shared/documents-files">Android Storage Access Framework documentation</a>. Supports user-selected file import without broad storage access.</li>
+      </ol>
+      <div class="callout warning">
+        <p><strong>Uncertainty note:</strong> Public documentation establishes platform support, but it does not guarantee that a particular Phi package, quantization, execution provider, and Android chipset combination will meet your latency or memory target. The pre-hackathon device spike is therefore a go/no-go requirement, not optional engineering polish.</p>
+      </div>
+    </section>
+  </main>
+  </div>
+
+  <footer>
+    <p>Copilot Local concept plan · Hack 26 research <a href="#top">Back to top &uarr;</a></p>
+  </footer>
+</body>
+</html>

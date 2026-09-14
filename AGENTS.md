@@ -1,4 +1,4 @@
-# Hack 06 project
+# Hack 26 project
 
 - This directory is the active hackathon workspace. Edit deliverable sources in
   `app/`, not the preserved `pitch hack 06.html` or generated `exports/` / `dist/`.
@@ -10,6 +10,10 @@
   work directly from disk with images, fonts and navigation included.
 - Register new deliverables in `app/deliverables.js`. Keep IDs unique and use
   lowercase letters, digits and hyphens.
+- `app/research/copilot-local/` is the approved, publishable research deliverable,
+  distinct from the local-only raw `research/` directory.
+- Use Hack 26 for project branding. Keep the existing repository, Pages URL,
+  local folder, and preserved backup names unchanged.
 - `npm run dev` serves a live preview at http://127.0.0.1:5173. Reuse an existing
   running server instead of starting another one.
 - `npm run export` creates self-contained HTML snapshots. The original HTML is
