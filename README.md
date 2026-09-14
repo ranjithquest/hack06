@@ -24,7 +24,7 @@ are made to the source files here, which updates the running preview.
 
 | Path | Purpose |
 | --- | --- |
-| `app/index.html`, `app/workspace/` | Workspace home and development controls |
+| `app/index.html`, `app/workspace/` | Workspace home and deck controls |
 | `app/deliverables.js` | Registry of deliverables |
 | `app/decks/mobile-intelligence/index.html` | Slide content |
 | `app/decks/mobile-intelligence/styles.css` | Existing deck styling |
@@ -45,14 +45,17 @@ npm run export -- mobile-intelligence
 
 `exports/mobile-intelligence.html` contains its styles, JavaScript, images and
 fonts. It opens directly in a browser without Node, a server, or an internet
-connection. Development controls are excluded. Export again after later edits.
+connection. Workspace controls are excluded. Export again after later edits.
 
 `npm run build` produces a static multi-page workspace in `dist/` and packages
 every registered deck as a self-contained HTML file in `dist/exports/`. Use
-`npm run preview` to view that build. The production hub's **Download HTML** link
-downloads the packaged snapshot without a server-side export endpoint. The live
-preview keeps its **Export HTML** controls; the CLI export command is always
-available. Asset source and license notices are included in `dist/licenses/`
+`npm run preview` to view that build. Both local and published decks include
+**Export HTML** at the top left and a **close (×) control** at the top right.
+Closing the deck returns to the workspace. There is no live-preview indicator.
+On the published deck, **Export HTML** downloads the packaged snapshot without a
+server-side export endpoint.
+Local **Export HTML** controls generate a fresh snapshot; the CLI export command
+is always available. Asset source and license notices are included in `dist/licenses/`
 and embedded in each HTML export's inert `asset-notices` template.
 
 ## GitHub publishing
@@ -107,8 +110,9 @@ workspace and the static build. Entries with `kind: "deck"` also support HTML
 export.
 
 Use `/assets/...` for shared asset references and relative module/style imports.
-Keep deck resources local for portable exports. Do not import the development
-toolbar into deck code; Vite adds it only to the live preview.
+Keep deck resources local for portable exports. Do not import the workspace
+toolbar into deck code; Vite adds it to local and published workspace pages,
+but keeps it out of standalone HTML exports.
 
 ## Checks
 

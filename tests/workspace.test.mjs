@@ -4,6 +4,38 @@ import { access, mkdir, mkdtemp, readFile, readdir, rm } from "node:fs/promises"
 import { resolve, sep } from "node:path";
 import { deliverables } from "../app/deliverables.js";
 import { exportDeck, exportPath, findDeck, project } from "../lib/exports.mjs";
+import { workspacePlugin } from "../lib/workspace-plugin.mjs";
+
+test("deck toolbar offers local export or a published download without a live indicator", () => {
+  const plugin = workspacePlugin();
+  for (const deck of deliverables.filter(item => item.kind === "deck")) {
+    for (const development of [true, false]) {
+      const tags = plugin.transformIndexHtml.handler("", {
+        filename: resolve(project, "app", deck.entry),
+        server: development ? {} : undefined,
+      });
+      const [toolbar, script] = tags;
+      assert.equal(toolbar.attrs["data-deck-id"], deck.id);
+      assert.equal(toolbar.attrs["aria-label"], "Deck tools");
+      const [download, close] = toolbar.children;
+      assert.equal(close.children, "&times;");
+      assert.equal(close.attrs["aria-label"], "Close deck and return to workspace");
+      const base = `https://ranjithquest.github.io/hack06/${deck.entry}`;
+      assert.equal(new URL(close.attrs.href, base).pathname, "/hack06/");
+      assert.equal(new URL(script.attrs.src, base).pathname, "/hack06/workspace/deck-tools.js");
+      assert.equal(download.children, "Export HTML");
+      assert.equal(download.tag, development ? "button" : "a");
+      if (!development) {
+        assert.equal(new URL(download.attrs.href, base).pathname, `/hack06/exports/${deck.id}.html`);
+        assert.equal(download.attrs.download, `${deck.id}.html`);
+      }
+      assert(!JSON.stringify(toolbar).includes("Live preview"));
+    }
+  }
+  assert.equal(plugin.transformIndexHtml.handler("workspace", {
+    filename: resolve(project, "app/index.html"),
+  }), "workspace");
+});
 
 test("deliverables have unique IDs and real entries inside the app", async () => {
   const seen = new Set();

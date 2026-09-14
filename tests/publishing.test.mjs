@@ -16,7 +16,16 @@ test("static publishing includes offline downloads and repository-relative asset
     for (const entry of entries) {
       const html = await readFile(resolve(directory, entry), "utf8");
       assert(!html.includes("/@vite/client"));
-      assert(!html.includes("workspace-preview-tools"));
+      const deck = deliverables.find(item => item.entry === entry && item.kind === "deck");
+      assert.equal(html.includes("workspace-preview-tools"), Boolean(deck), "Only decks need the toolbar");
+      if (deck) {
+        assert(html.includes('aria-label="Close deck and return to workspace"'));
+        assert(!html.includes("Back to workspace"));
+        assert(html.includes("Export HTML"));
+        assert(html.includes(`download="${deck.id}.html"`));
+        assert(!html.includes("Live preview"));
+        assert(!html.includes("preview-live"));
+      }
       const references = [...html.matchAll(/\b(?:src|href)=["']([^"']+)["']/g)];
       for (const [, reference] of references) {
         if (/^(?:data:|https?:|#)/.test(reference)) continue;
