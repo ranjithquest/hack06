@@ -58,7 +58,8 @@ and embedded in each HTML export's inert `asset-notices` template.
 ## GitHub publishing
 
 The authorized repository is https://github.com/ranjithquest/hack06, branch
-`main`. The repository is private. Do not change its visibility to enable hosting.
+`main`. The owner explicitly made the repository public to enable GitHub Pages.
+Preserve the owner's chosen visibility; do not change it automatically.
 
 Each reviewed push to `main` runs `.github/workflows/pages.yml`: a clean
 `npm ci`, tests, the complete static build, artifact upload, and GitHub Pages
@@ -76,19 +77,17 @@ git commit
 git push origin main
 ```
 
-The intended site path is `https://ranjithquest.github.io/hack06/`; deck routes
+The GitHub Pages site path is `https://ranjithquest.github.io/hack06/`; deck routes
 and downloadable HTML use relative links so that the `/hack06/` prefix is
 preserved. A successful build alone does not mean the site is live: check the
 deployment job and the URL it reports.
 
-**Current hosting prerequisite:** GitHub rejected enabling Pages for this private
-repository with HTTP 422: “Your current plan does not support GitHub Pages for
-this repository.” The repository owner's plan must support private-repository
-Pages before deployment can complete. After that, set **Settings → Pages →
-Build and deployment → Source** to **GitHub Actions**, or use the repository
-Pages API with `build_type: "workflow"`, then rerun the workflow. Repository
-privacy and Pages site visibility are separate settings; confirm the intended
-site audience before enabling hosting.
+Pages is enabled with **Settings → Pages → Build and deployment → Source**
+set to **GitHub Actions** (`build_type: "workflow"`), with HTTPS enforced.
+The former private-repository plan restriction no longer applies to the
+owner-public repository. If Pages settings are reset, restore the workflow
+source and rerun Actions. Repository visibility, account plans, and site-access
+policies remain owner decisions, not automatic deployment workarounds.
 
 `conversation-history.md`, raw `research/`, reference `deliverables/`, the
 unchanged `pitch hack 06.html` backup, `MAI-visual-reference.md`, and the one-time

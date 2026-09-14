@@ -24,10 +24,12 @@
   authorized syncing requested project changes and GitHub deployment. Commit
   reviewed changes and push `origin main`; each push runs the Pages workflow.
   Do not create a watcher that commits every file change.
-- Keep the repository private. Pages currently returns HTTP 422 because the
-  owner's plan does not support Pages for this private repository. Do not change
-  visibility or broad account settings to work around this. After a suitable
-  plan is available, configure Pages source as GitHub Actions and rerun CI.
+- The owner explicitly made the repository public on 2026-09-14. Preserve that
+  chosen visibility; never change repository visibility or broad account
+  settings as an automatic deployment workaround.
+- Pages is enabled with GitHub Actions as its source (`build_type: "workflow"`)
+  and HTTPS enforced. The earlier private-repository plan restriction no longer
+  applies. The site path is `https://ranjithquest.github.io/hack06/`.
 - Use `npm test` and `npm run build` before publishing. The build includes
   self-contained deck downloads in `dist/exports/`. Verify the Actions deployment
   result and its actual site URL; never report a queued/failed job as deployed.
