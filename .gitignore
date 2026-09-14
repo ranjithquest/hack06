@@ -1,0 +1,30 @@
+node_modules/
+dist/
+exports/
+.DS_Store
+*.log
+.test-artifacts/
+
+# Local history, research, references, and the unchanged migration backup.
+/conversation-history.md
+/research/
+/deliverables/
+/MAI-visual-reference.md
+/pitch hack 06.html
+/scripts/migrate-deck.mjs
+
+# Credentials, private notes, and agent/session state never belong in Git.
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+credentials.json
+credentials/
+.secrets/
+private-notes/
+notes/
+.copilot/
+.agency/
